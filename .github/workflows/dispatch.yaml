@@ -30,5 +30,6 @@ jobs:
           INPUT=${VERSION_INPUT:-$RELEASE_NAME}
           echo $INPUT
           echo ${{ github.event.pull_request.body }}
+          TEST 123
           echo "\n\n\n"
           echo $PR_DESC
