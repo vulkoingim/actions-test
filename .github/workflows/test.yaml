@@ -62,7 +62,19 @@ jobs:
           echo $PR_DESC
 
   dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow dispatch
+        #        env:
+        #          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
+        shell: bash
+        run: |
+          gh workflow run dispatch.yaml -f pr_description=${{ github.event.pull_request.body || github.event.issue.body }} --ref ${{ github.head_ref || github.ref }}
+
+
     #    if: github.event.issue.pull_request # && contains(github.event.comment.body, 'run workflow') }}
-    uses: ./.github/workflows/dispatch.yaml #@test
-    with:
-      pr_description: ${{ github.event.pull_request.body || github.event.issue.body }}
+#    uses: ./.github/workflows/dispatch.yaml #@test
+
+#      with:
+#        pr_description:
+
