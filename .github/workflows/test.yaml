@@ -65,6 +65,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Workflow dispatch
+        env:
+          GH_TOKEN: ${{ github.token }}
         #        env:
         #          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
         shell: bash
