@@ -1,0 +1,34 @@
+name: Dispatch
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      pr_description:
+        required: true
+        type: string
+
+jobs:
+  any_name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Any Name Bash Test Step
+        env:
+          PR_DESC: '${{ github.event.pull_request.body || inputs.pr_description }}'
+        shell: bash
+        run: |
+          echo 
+          echo "GH_REPO: $GH_REPO"
+          echo "GH_REPO_O: $GH_REPO_O"
+          echo "GH_T: $GH_T"
+          echo $GITHUB_REF
+          echo $GITHUB_HEAD_REF
+          echo ${{ github.head_ref }} 
+          echo ${{ github.ref }}
+          echo "${{ github.event.release.tag_name }}"
+          VERSION_INPUT=${{ github.event.inputs.version }}
+          RELEASE_NAME=${{ github.event.release.tag_name }}
+          INPUT=${VERSION_INPUT:-$RELEASE_NAME}
+          echo $INPUT
+          echo ${{ github.event.pull_request.body }}
+          echo "\n\n\n"
+          echo $PR_DESC
