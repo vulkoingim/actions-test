@@ -35,19 +35,13 @@ jobs:
   #            echo "preview_enable=${{ contains(github.event.pull_request.body, '[x] /werft with-preview') }}"
   #            echo "preview_infra_provider=${{ contains(github.event.pull_request.body, '[X] /werft with-gce-vm') && 'gce' || 'harvester' }}"
   #          } >> $GITHUB_OUTPUT
-  dispatch:
-    #    if: github.event.issue.pull_request # && contains(github.event.comment.body, 'run workflow') }}
-    uses: ./.github/workflows/dispatch.yaml #@test
-    with:
-      pr_description: ${{ github.event.pull_request.body }}
-
   any_name:
-#    if: github.event.issue.pull_request # && contains(github.event.comment.body, 'run workflow') }}
+    #    if: github.event.issue.pull_request # && contains(github.event.comment.body, 'run workflow') }}
     runs-on: ubuntu-latest
     steps:
       - name: Any Name Bash Test Step
         env:
-          PR_DESC: '${{ github.event.pull_request.body || inputs.pr_description }}'
+          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
         shell: bash
         run: |
           echo 
@@ -66,3 +60,9 @@ jobs:
           echo ${{ github.event.pull_request.body }}
           echo "\n\n\n"
           echo $PR_DESC
+
+  dispatch:
+    #    if: github.event.issue.pull_request # && contains(github.event.comment.body, 'run workflow') }}
+    uses: ./.github/workflows/dispatch.yaml #@test
+    with:
+      pr_description: ${{ github.event.pull_request.body || github.event.issue.body }}
