@@ -16,7 +16,7 @@ jobs:
           PR_DESC: '${{ github.event.pull_request.body || inputs.pr_description }}'
         shell: bash
         run: |
-          echo "THIS IS A TEST"
+          echo 
           echo "GH_REPO: $GH_REPO"
           echo "GH_REPO_O: $GH_REPO_O"
           echo "GH_T: $GH_T"
@@ -32,7 +32,13 @@ jobs:
           echo ${{ github.event.pull_request.body }}
           echo "\n\n\n"
           echo $PR_DESC
+          echo ${{ github.event.pull_request }}
           echo ${{ github.event.pull_request.head_ref }}
           echo ${{ github.event.pull_request.head_ref.name }}
           echo ${{ github.event.pull_request.ref }}
           echo ${{ github.event.pull_request.ref.name }}
+          echo ${{ github.pull_request }}
+          echo ${{ github.pull_request.head_ref }}
+          echo ${{ github.pull_request.head_ref.name }}
+          echo ${{ github.pull_request.ref }}
+          echo ${{ github.pull_request.ref.name }}

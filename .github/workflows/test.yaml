@@ -71,7 +71,7 @@ jobs:
           echo ${{ github.pull_request.ref }}
           echo ${{ github.pull_request.ref.name }}
 
-  dispatch:
+  dispatch-gh:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -84,10 +84,7 @@ jobs:
         run: |
           gh workflow run dispatch.yaml -f pr_description=${{ github.event.pull_request.body || github.event.issue.body }} --ref ${{ github.head_ref || github.ref }}
 
-
-    #    if: github.event.issue.pull_request # && contains(github.event.comment.body, 'run workflow') }}
-#    uses: ./.github/workflows/dispatch.yaml #@test
-
-#      with:
-#        pr_description:
-
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/dispatch.yaml#@test
