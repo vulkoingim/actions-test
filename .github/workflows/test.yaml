@@ -89,4 +89,4 @@ jobs:
   dispatch:
     uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@test
     with:
-      pr_descritpion: "$PR_DESC"
+      pr_description: "$PR_DESC"
