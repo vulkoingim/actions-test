@@ -39,12 +39,12 @@ jobs:
   #            echo "preview_enable=${{ contains(github.event.pull_request.body, '[x] /werft with-preview') }}"
   #            echo "preview_infra_provider=${{ contains(github.event.pull_request.body, '[X] /werft with-gce-vm') && 'gce' || 'harvester' }}"
   #          } >> $GITHUB_OUTPUT
-  any_name:
-    #    if: github.event.issue.pull_request # && contains(github.event.comment.body, 'run workflow') }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: xt0rted/pull-request-comment-branch@v1
-        id: comment-branch
+#  any_name:
+#    #    if: github.event.issue.pull_request # && contains(github.event.comment.body, 'run workflow') }}
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: xt0rted/pull-request-comment-branch@v1
+#        id: comment-branch
 
   #      - name: Any Name Bash Test Step
 #        env:
@@ -79,21 +79,23 @@ jobs:
 #          echo ${{ github.pull_request.ref.name }}
 #          echo ${{ github.event.pull_request.head.sha }}
 
-#  dispatch-gh:
+  dispatch-gh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
+      - uses: actions/checkout@v3
+      - name: Workflow dispatch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
+        shell: bash
+        run: |
+          echo ${{ steps.comment-branch.outputs.head_ref }}
+          gh workflow run dispatch.yaml -f pr_description=${{ github.event.pull_request.body || github.event.issue.body }} --ref ${{ steps.comment-branch.outputs.head_ref }}
+
+#  dispatch:
 #    runs-on: ubuntu-latest
 #    steps:
-#      - uses: actions/checkout@v3
-#      - name: Workflow dispatch
-#        env:
-#          GH_TOKEN: ${{ github.token }}
-#        #        env:
-#        #          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
-#        shell: bash
-#        run: |
-#          gh workflow run dispatch.yaml -f pr_description=${{ github.event.pull_request.body || github.event.issue.body }} --ref ${{ github.head_ref || github.ref }}
+#      - uses: ./.github/workflows/dispatch.yaml@"${{ steps.comment-branch.outputs.head_ref }}"
 
-  dispatch:
-#    runs-on: ubuntu-latest
-    uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@${{ steps.comment-branch.outputs.head_ref }}
-    with:
-        pr_description: ${{ github.event.pull_request.body || github.event.issue.body }}

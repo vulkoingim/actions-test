@@ -6,6 +6,10 @@ on:
       contents: read
       security-events: write
   workflow_call:
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     inputs:
       pr_description:
         required: true
