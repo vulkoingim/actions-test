@@ -80,8 +80,6 @@ jobs:
       - name: Workflow dispatch
         env:
           GH_TOKEN: ${{ github.token }}
-        #        env:
-        #          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
         shell: bash
         run: |
           gh workflow run dispatch.yaml -f pr_description=${{ github.event.pull_request.body || github.event.issue.body }} --ref ${{ github.head_ref || github.ref }}
@@ -89,4 +87,4 @@ jobs:
   dispatch:
     uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@test
     with:
-      pr_description: "$PR_DESC"
+      pr_description: ${{ github.event.pull_request.body || github.event.issue.body }}
