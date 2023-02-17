@@ -1,6 +1,10 @@
 name: Dispatch
 on:
   workflow_dispatch:
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
   workflow_call:
     inputs:
       pr_description:

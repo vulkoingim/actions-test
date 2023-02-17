@@ -2,6 +2,10 @@ name: Dev
 
 on:
   workflow_dispatch:
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
   issue_comment:
     types: [ created ]
 
@@ -39,52 +43,57 @@ jobs:
     #    if: github.event.issue.pull_request # && contains(github.event.comment.body, 'run workflow') }}
     runs-on: ubuntu-latest
     steps:
-      - name: Any Name Bash Test Step
-        env:
-          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
-        shell: bash
-        run: |
-          echo 
-          echo "GH_REPO: $GH_REPO"
-          echo "GH_REPO_O: $GH_REPO_O"
-          echo "GH_T: $GH_T"
-          echo $GITHUB_REF
-          echo $GITHUB_HEAD_REF
-          echo ${{ github.head_ref }} 
-          echo ${{ github.ref }}
-          echo "${{ github.event.release.tag_name }}"
-          VERSION_INPUT=${{ github.event.inputs.version }}
-          RELEASE_NAME=${{ github.event.release.tag_name }}
-          INPUT=${VERSION_INPUT:-$RELEASE_NAME}
-          echo $INPUT
-          echo ${{ github.event.pull_request.body }}
-          echo "\n\n\n"
-          echo $PR_DESC
-          echo ${{ github.event.pull_request }}
-          echo ${{ github.event.pull_request.head_ref }}
-          echo ${{ github.event.pull_request.head_ref.name }}
-          echo ${{ github.event.pull_request.ref }}
-          echo ${{ github.event.pull_request.ref.name }}
-          echo ${{ github.pull_request }}
-          echo ${{ github.pull_request.head_ref }}
-          echo ${{ github.pull_request.head_ref.name }}
-          echo ${{ github.pull_request.ref }}
-          echo ${{ github.pull_request.ref.name }}
+      - uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
 
-  dispatch-gh:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Workflow dispatch
-        env:
-          GH_TOKEN: ${{ github.token }}
-        #        env:
-        #          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
-        shell: bash
-        run: |
-          gh workflow run dispatch.yaml -f pr_description=${{ github.event.pull_request.body || github.event.issue.body }} --ref ${{ github.head_ref || github.ref }}
+  #      - name: Any Name Bash Test Step
+#        env:
+#          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
+#        shell: bash
+#        run: |
+#          echo
+#          echo "GH_REPO: $GH_REPO"
+#          echo "GH_REPO_O: $GH_REPO_O"
+#          echo "GH_T: $GH_T"
+#          echo $GITHUB_REF
+#          echo $GITHUB_HEAD_REF
+#          echo ${{ github.head_ref }}
+#          echo ${{ github.ref }}
+#          echo "${{ github.event.release.tag_name }}"
+#          VERSION_INPUT=${{ github.event.inputs.version }}
+#          RELEASE_NAME=${{ github.event.release.tag_name }}
+#          INPUT=${VERSION_INPUT:-$RELEASE_NAME}
+#          echo $INPUT
+#          echo ${{ github.event.pull_request.body }}
+#          echo "\n\n\n"
+#          echo $PR_DESC
+#          echo ${{ github.event.pull_request }}
+#          echo ${{ github.event.pull_request.head_ref }}
+#          echo ${{ github.event.pull_request.head_ref.name }}
+#          echo ${{ github.event.pull_request.ref }}
+#          echo ${{ github.event.pull_request.ref.name }}
+#          echo ${{ github.pull_request }}
+#          echo ${{ github.pull_request.head_ref }}
+#          echo ${{ github.pull_request.head_ref.name }}
+#          echo ${{ github.pull_request.ref }}
+#          echo ${{ github.pull_request.ref.name }}
+#          echo ${{ github.event.pull_request.head.sha }}
+
+#  dispatch-gh:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Workflow dispatch
+#        env:
+#          GH_TOKEN: ${{ github.token }}
+#        #        env:
+#        #          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
+#        shell: bash
+#        run: |
+#          gh workflow run dispatch.yaml -f pr_description=${{ github.event.pull_request.body || github.event.issue.body }} --ref ${{ github.head_ref || github.ref }}
 
   dispatch:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/dispatch.yaml#@test
+      - uses: ./.github/workflows/dispatch.yaml@${{ steps.comment-branch.outputs.head_ref }}
+
