@@ -93,7 +93,7 @@ jobs:
 #          gh workflow run dispatch.yaml -f pr_description=${{ github.event.pull_request.body || github.event.issue.body }} --ref ${{ github.head_ref || github.ref }}
 
   dispatch:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ./.github/workflows/dispatch.yaml@${{ steps.comment-branch.outputs.head_ref }}
-
+#    runs-on: ubuntu-latest
+    uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@${{ steps.comment-branch.outputs.head_ref }}
+    with:
+        pr_description: ${{ github.event.pull_request.body || github.event.issue.body }}
