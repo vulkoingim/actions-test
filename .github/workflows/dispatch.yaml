@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  dispatch:
+  dispatched:
     runs-on: ubuntu-latest
     steps:
       - name: Any Name Bash Test Step
@@ -16,29 +16,32 @@ jobs:
           PR_DESC: '${{ github.event.pull_request.body || inputs.pr_description }}'
         shell: bash
         run: |
-          echo "THIS IS A TEST"
+          echo "DISPATCHED"
+          echo 
           echo "GH_REPO: $GH_REPO"
           echo "GH_REPO_O: $GH_REPO_O"
           echo "GH_T: $GH_T"
           echo $GITHUB_REF
           echo $GITHUB_HEAD_REF
-          echo ${{ github.head_ref }} 
-          echo ${{ github.ref }}
+          echo "${{ github.head_ref }}"
+          echo "${{ github.ref }}"
+          echo "${{ github.event.number }}"
           echo "${{ github.event.release.tag_name }}"
           VERSION_INPUT=${{ github.event.inputs.version }}
           RELEASE_NAME=${{ github.event.release.tag_name }}
           INPUT=${VERSION_INPUT:-$RELEASE_NAME}
           echo $INPUT
-          echo ${{ github.event.pull_request.body }}
+          echo "${{ github.event.pull_request.body }}"
           echo "\n\n\n"
           echo $PR_DESC
-          echo ${{ github.event.pull_request }}
-          echo ${{ github.event.pull_request.head_ref }}
-          echo ${{ github.event.pull_request.head_ref.name }}
-          echo ${{ github.event.pull_request.ref }}
-          echo ${{ github.event.pull_request.ref.name }}
-          echo ${{ github.pull_request }}
-          echo ${{ github.pull_request.head_ref }}
-          echo ${{ github.pull_request.head_ref.name }}
-          echo ${{ github.pull_request.ref }}
-          echo ${{ github.pull_request.ref.name }}
+          echo "${{ github.event.issue.number }}"
+          echo "${{ github.event.pull_request }}"
+          echo "${{ github.event.pull_request.head_ref }}"
+          echo "${{ github.event.pull_request.head_ref.name }}"
+          echo "${{ github.event.pull_request.ref }}"
+          echo "${{ github.event.pull_request.ref.name }}"
+          echo "${{ github.pull_request }}"
+          echo "${{ github.pull_request.head_ref }}"
+          echo "${{ github.pull_request.head_ref.name }}"
+          echo "${{ github.pull_request.ref }}"
+          echo "${{ github.pull_request.ref.name }}"
