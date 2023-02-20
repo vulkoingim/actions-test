@@ -46,6 +46,7 @@ jobs:
         id: output
         env:
           PR_DESC: ${{ github.event.pull_request.body }}
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           {
