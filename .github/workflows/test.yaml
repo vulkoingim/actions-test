@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: xt0rted/pull-request-comment-branch@v1.4.0
         id: comment-branch
-      - uses: actions/checkout@v3
+#      - uses: actions/checkout@v3
       - name: Workflow dispatch
         env:
           GH_TOKEN: ${{ github.token }}
@@ -23,7 +23,7 @@ jobs:
         run: |
           echo ${{ steps.comment-branch.outputs.head_ref }}
           echo ${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}
-          gh workflow run dispatch.yaml -f recreate_vm=${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }} pr_number=${{ github.event.issue.number }} --ref ${{ steps.comment-branch.outputs.head_ref }}
+          gh workflow run dispatch.yaml --repo vulkoingim/actions-test  -f recreate_vm=${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }} -f pr_number=${{ github.event.issue.number }} --ref ${{ steps.comment-branch.outputs.head_ref }}
 
 #  dispatch:
 #    uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@${{ needs.dispatch-gh.outputs.branch }}
