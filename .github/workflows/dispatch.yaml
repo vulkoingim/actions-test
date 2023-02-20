@@ -7,7 +7,7 @@ on:
         type: string
         description: "ad"
         default: "false"
-      pr_description:
+      pr_number:
         required: true
         type: string
         description: "ad"
@@ -45,13 +45,14 @@ jobs:
       - name: "Set outputs"
         id: output
         env:
-          PR_DESC: '${{ github.event.pull_request.body }}'
+          PR_DESC: ${{ github.event.pull_request.body }}
         shell: bash
         run: |
           {
-            echo "preview_enable=${{ contains(github.event.pull_request.body, '[x] /werft with-preview') }}"
-            echo "preview_infra_provider=${{ contains(github.event.pull_request.body, '[X] /werft with-gce-vm') && 'gce' || 'harvester' }}"
-            echo "with_large_vm=${{ contains(github.event.pull_request.body, '[X] /werft with-large-vm') }}"
+            [[ ${{ inputs.pr_number }} != "" ]] && PR_DESC=$(gh pr view ${{ inputs.pr_number }} --json body -t {{.body}})
+            echo "preview_enable=${{ contains(env.PR_DESC, '[x] /werft with-preview') }}"
+            echo "preview_infra_provider=${{ contains(env.PR_DESC, '[X] /werft with-gce-vm') && 'gce' || 'harvester' }}"
+            echo "with_large_vm=${{ contains(env.PR_DESC, '[X] /werft with-large-vm') }}"
           } >> $GITHUB_OUTPUT
 
   dispatch:
@@ -59,8 +60,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Any Name Bash Test Step
-        env:
-          PR_DESC: '${{ github.event.pull_request.body ||  }}'
         shell: bash
         run: |
           echo ${{ inputs.recreate_vm }}
