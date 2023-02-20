@@ -39,9 +39,9 @@ jobs:
       analytics: ${{ steps.output.outputs.analytics }}
       workspace_feature_flags: ${{ steps.output.outputs.workspace_feature_flags }}
     steps:
-      - name: "Determine Branch"
-        id: branches
-        uses: transferwise/sanitize-branch-name@v1
+#      - name: "Determine Branch"
+#        id: branches
+#        uses: transferwise/sanitize-branch-name@v1
       - name: "Set outputs"
         id: output
         env:
@@ -49,9 +49,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
+          [[ ${{ inputs.pr_number }} != "" ]] && PR_DESC=$(gh pr view ${{ inputs.pr_number }} --json body -t {{.body}} --repo vulkoingim/actions-test) 
+          echo $PR_DESC
           {
-            [[ ${{ inputs.pr_number }} != "" ]] && PR_DESC=$(gh pr view ${{ inputs.pr_number }} --json body -t {{.body}} --repo vulkoingim/actions-test) 
-            echo $PR_DESC
             echo "preview_enable=${{ contains(env.PR_DESC, '[x] /werft with-preview') }}"
             echo "preview_infra_provider=${{ contains(env.PR_DESC, '[X] /werft with-gce-vm') && 'gce' || 'harvester' }}"
             echo "with_large_vm=${{ contains(env.PR_DESC, '[X] /werft with-large-vm') }}"
