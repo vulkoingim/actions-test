@@ -11,7 +11,7 @@ on:
 jobs:
   configuration:
     name: Configure job parameters
-    runs-on: [ self-hosted ]
+    runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.head_ref || github.ref }}-configuration
       cancel-in-progress: true
@@ -64,6 +64,7 @@ jobs:
           } >> $GITHUB_OUTPUT
 
   dispatch:
+    needs: [ configuration ]
     runs-on: ubuntu-latest
     steps:
       - name: Any Name Bash Test Step
