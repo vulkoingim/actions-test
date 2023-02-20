@@ -3,7 +3,12 @@ on:
   workflow_dispatch:
     inputs:
       recreate_vm:
-        required: false
+        required: true
+        type: string
+        description: "ad"
+        default: "false"
+      pr_description:
+        required: true
         type: string
         description: "ad"
         default: "false"
@@ -55,7 +60,7 @@ jobs:
     steps:
       - name: Any Name Bash Test Step
         env:
-          PR_DESC: '${{ github.event.pull_request.body }}'
+          PR_DESC: '${{ github.event.pull_request.body ||  }}'
         shell: bash
         run: |
           echo ${{ inputs.recreate_vm }}
