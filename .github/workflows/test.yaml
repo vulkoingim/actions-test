@@ -2,83 +2,10 @@ name: Dev
 
 on:
   workflow_dispatch:
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
   issue_comment:
     types: [ created ]
 
 jobs:
-  #  configuration:
-  #    name: Configure job parameters
-  #    runs-on: [ self-hosted ]
-  #    concurrency:
-  #      group: ${{ github.head_ref || github.ref }}-configuration
-  #      cancel-in-progress: true
-  #    outputs:
-  #      is_main_branch: ${{ steps.output.outputs.is_main_branch }}
-  #      version: ${{ steps.output.outputs.version }}
-  #      preview_enable: ${{ steps.output.outputs.preview_enable }}
-  #      preview_infra_provider: ${{ steps.output.outputs.preview_infra_provider }}
-  #    steps:
-  ##      - name: "Determine Branch"
-  ##        id: branches
-  ##        uses: transferwise/sanitize-branch-name@v1
-  #      - name: "Set outputs"
-  #        id: output
-  #        env:
-  #          PR_DESC: '${{ github.event.pull_request.body }}'
-  #        shell: bash
-  #        run: |
-  #          {
-  #            echo "is_main_branch=${{ (github.head_ref || github.ref) == 'refs/heads/main' }}"
-  #            echo "version=$
-  #          {{ steps.branches.outputs.sanitized-branch-name }}-gha.${{github.run_number}}"
-  #            echo "with_github_actions=${{ contains(github.event.pull_request.body, '[x] /werft with-github-actions') }}"
-  #            echo "preview_enable=${{ contains(github.event.pull_request.body, '[x] /werft with-preview') }}"
-  #            echo "preview_infra_provider=${{ contains(github.event.pull_request.body, '[X] /werft with-gce-vm') && 'gce' || 'harvester' }}"
-  #          } >> $GITHUB_OUTPUT
-#  any_name:
-#    #    if: github.event.issue.pull_request # && contains(github.event.comment.body, 'run workflow') }}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: xt0rted/pull-request-comment-branch@v1
-#        id: comment-branch
-
-  #      - name: Any Name Bash Test Step
-#        env:
-#          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
-#        shell: bash
-#        run: |
-#          echo
-#          echo "GH_REPO: $GH_REPO"
-#          echo "GH_REPO_O: $GH_REPO_O"
-#          echo "GH_T: $GH_T"
-#          echo $GITHUB_REF
-#          echo $GITHUB_HEAD_REF
-#          echo ${{ github.head_ref }}
-#          echo ${{ github.ref }}
-#          echo "${{ github.event.release.tag_name }}"
-#          VERSION_INPUT=${{ github.event.inputs.version }}
-#          RELEASE_NAME=${{ github.event.release.tag_name }}
-#          INPUT=${VERSION_INPUT:-$RELEASE_NAME}
-#          echo $INPUT
-#          echo ${{ github.event.pull_request.body }}
-#          echo "\n\n\n"
-#          echo $PR_DESC
-#          echo ${{ github.event.pull_request }}
-#          echo ${{ github.event.pull_request.head_ref }}
-#          echo ${{ github.event.pull_request.head_ref.name }}
-#          echo ${{ github.event.pull_request.ref }}
-#          echo ${{ github.event.pull_request.ref.name }}
-#          echo ${{ github.pull_request }}
-#          echo ${{ github.pull_request.head_ref }}
-#          echo ${{ github.pull_request.head_ref.name }}
-#          echo ${{ github.pull_request.ref }}
-#          echo ${{ github.pull_request.ref.name }}
-#          echo ${{ github.event.pull_request.head.sha }}
-
   dispatch-gh:
     runs-on: ubuntu-latest
     outputs:
@@ -96,7 +23,7 @@ jobs:
           echo ${{ steps.comment-branch.outputs.head_ref }}
           gh workflow run dispatch.yaml -f pr_description=${{ github.event.pull_request.body || github.event.issue.body }} --ref ${{ steps.comment-branch.outputs.head_ref }}
 
-  dispatch:
-    uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@${{ needs.dispatch-gh.outputs.branch }}
-    with:
-      pr_description: ${{ github.event.pull_request.body || github.event.issue.body }}
+#  dispatch:
+#    uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@${{ needs.dispatch-gh.outputs.branch }}
+#    with:
+#      pr_description: ${{ github.event.pull_request.body || github.event.issue.body }}
