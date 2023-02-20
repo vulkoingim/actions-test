@@ -44,23 +44,9 @@ jobs:
         shell: bash
         run: |
           {
-            echo "is_main_branch=${{ (github.head_ref || github.ref) == 'refs/heads/main' }}"
-            echo "version=${{ steps.branches.outputs.sanitized-branch-name }}-gha.${{github.run_number}}"
-            echo "with_github_actions=${{ contains(github.event.pull_request.body, '[x] /werft with-github-actions') }}"
             echo "preview_enable=${{ contains(github.event.pull_request.body, '[x] /werft with-preview') }}"
             echo "preview_infra_provider=${{ contains(github.event.pull_request.body, '[X] /werft with-gce-vm') && 'gce' || 'harvester' }}"
-            echo "build_no_cache=${{ contains(github.event.pull_request.body, '[x] leeway-no-cache') }}"
-            echo "build_no_test=${{ contains(github.event.pull_request.body, '[x] /werft no-test') }}"
-            echo "build_leeway_target=$(echo "$PR_DESC" | sed -n -e 's/^.*leeway-target=//p' | sed 's/\r$//')"
             echo "with_large_vm=${{ contains(github.event.pull_request.body, '[X] /werft with-large-vm') }}"
-            echo "publish_to_npm=${{ contains(github.event.pull_request.body, '[X] /werft publish-to-npm') }}"
-            echo "publish_to_jbmp=${{ contains(github.event.pull_request.body, '[X] /werft publish-to-jb-marketplace') }}"
-            echo "with_ws_manager_mk2=${{ contains(github.event.pull_request.body, '[X] with-ws-manager-mk2') }}"
-            echo "with_dedicated_emulation=${{ contains(github.event.pull_request.body, '[X] with-dedicated-emulation') }}"
-            echo "with_ee_license=${{ contains(github.event.pull_request.body, '[X] with-ee-license') }}"
-            echo "with_slow_database=${{ contains(github.event.pull_request.body, '[X] with-slow-database') }}"
-            echo "analytics=${{ contains(github.event.pull_request.body, '[X] analytics') }}"
-            echo "workspace_feature_flags=$(echo "$PR_DESC" | grep -oP '(?<=\[X\] workspace-feature-flags).*')"
           } >> $GITHUB_OUTPUT
 
   dispatch:
@@ -69,24 +55,10 @@ jobs:
     steps:
       - name: Any Name Bash Test Step
         env:
-          PR_DESC: '${{ github.event.pull_request.body || inputs.pr_description }}'
+          PR_DESC: '${{ github.event.pull_request.body }}'
         shell: bash
         run: |
           echo ${{ inputs.recreate_vm }}
-          echo ${{ needs.configuration.outputs.is_main_branch }}
-          echo ${{ needs.configuration.outputs.version }}
           echo ${{ needs.configuration.outputs.preview_enable }}
           echo ${{ needs.configuration.outputs.preview_infra_provider }}
-          echo ${{ needs.configuration.outputs.with_github_actions }}
-          echo ${{ needs.configuration.outputs.build_no_cache }}
-          echo ${{ needs.configuration.outputs.build_no_test }}
-          echo ${{ needs.configuration.outputs.build_leeway_target }}
           echo ${{ needs.configuration.outputs.with_large_vm }}
-          echo ${{ needs.configuration.outputs.publish_to_npm }}
-          echo ${{ needs.configuration.outputs.publish_to_jbmp }}
-          echo ${{ needs.configuration.outputs.with_ws_manager_mk2 }}
-          echo ${{ needs.configuration.outputs.with_dedicated_emulation }}
-          echo ${{ needs.configuration.outputs.with_ee_license }}
-          echo ${{ needs.configuration.outputs.with_slow_database }}
-          echo ${{ needs.configuration.outputs.analytics }}
-          echo ${{ needs.configuration.outputs.workspace_feature_flags }}
