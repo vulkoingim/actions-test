@@ -12,18 +12,32 @@ jobs:
     outputs:
       branch: ${{ steps.comment-branch.outputs.head_ref }}
     steps:
-      - uses: xt0rted/pull-request-comment-branch@v1.4.0
+      - uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
-#      - uses: actions/checkout@v3
-      - name: Workflow dispatch
-        env:
-          GH_TOKEN: ${{ github.token }}
-#          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
-        shell: bash
-        run: |
-          echo ${{ steps.comment-branch.outputs.head_ref }}
-          echo ${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}
-          gh workflow run dispatch.yaml --repo vulkoingim/actions-test  -f recreate_vm=${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }} -f pr_number=${{ github.event.issue.number }} --ref ${{ steps.comment-branch.outputs.head_ref }}
+      #      - uses: actions/checkout@v3
+      #      - name: Workflow dispatch
+      #        env:
+      #          GH_TOKEN: ${{ github.token }}
+      ##          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
+      #        shell: bash
+      #        run: |
+      #          echo ${{ steps.comment-branch.outputs.head_ref }}
+      #          echo ${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}
+      #          gh workflow run dispatch.yaml --repo vulkoingim/actions-test  -f recreate_vm=${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }} -f pr_number=${{ github.event.issue.number }} --ref ${{ steps.comment-branch.outputs.head_ref }}
+      - name: Trigger Workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'dispatch.yaml',
+              ref: '${{ steps.comment-branch.outputs.head_ref }}',
+              inputs: {
+                "pr_number": '${{ github.event.issue.number }}',
+                "recreate_vm": '${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}'
+              }
+            })
 
 #  dispatch:
 #    uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@${{ needs.dispatch-gh.outputs.branch }}
