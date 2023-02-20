@@ -23,7 +23,7 @@ jobs:
         run: |
           echo ${{ steps.comment-branch.outputs.head_ref }}
           echo ${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}
-          gh workflow run dispatch.yaml -f recreate_vm=${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }} --ref ${{ steps.comment-branch.outputs.head_ref }}
+          gh workflow run dispatch.yaml -f recreate_vm=${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }} pr_description=${{ github.event.pull_request.body || github.event.issue.body }} --ref ${{ steps.comment-branch.outputs.head_ref }}
 
 #  dispatch:
 #    uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@${{ needs.dispatch-gh.outputs.branch }}
