@@ -50,8 +50,9 @@ jobs:
         shell: bash
         run: |
           if [[ ${{ inputs.pr_number }} != "" ]]; then
-            desc=$(gh pr view ${{ inputs.pr_number }} --json body -t {{.body}} --repo vulkoingim/actions-test)
-            echo "PR_DESC=${desc}" >> $GITHUB_ENV
+            echo 'PR_DESC<<EOF' >> $GITHUB_ENV
+            echo "$(gh pr view ${{ inputs.pr_number }} --json body -t {{.body}} --repo vulkoingim/actions-test)" >> $GITHUB_ENV
+            echo 'EOF' >> $GITHUB_ENV
           fi
           {
             echo "preview_enable=${{ contains(env.PR_DESC, '[x] /werft with-preview') }}"
