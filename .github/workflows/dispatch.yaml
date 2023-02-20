@@ -39,11 +39,9 @@ jobs:
       analytics: ${{ steps.output.outputs.analytics }}
       workspace_feature_flags: ${{ steps.output.outputs.workspace_feature_flags }}
     steps:
-#      - name: "Determine Branch"
-#        id: branches
-#        uses: transferwise/sanitize-branch-name@v1
       - name: "Set prd"
         id: prd
+        if: ${{ inputs.pr_number != '' }}
         env:
           PR_DESC: ${{ github.event.pull_request.body }}
           GH_TOKEN: ${{ github.token }}
