@@ -42,8 +42,8 @@ jobs:
 #      - name: "Determine Branch"
 #        id: branches
 #        uses: transferwise/sanitize-branch-name@v1
-      - name: "Set outputs"
-        id: output
+      - name: "Set prd"
+        id: prd
         env:
           PR_DESC: ${{ github.event.pull_request.body }}
           GH_TOKEN: ${{ github.token }}
@@ -54,6 +54,10 @@ jobs:
             echo "$(gh pr view ${{ inputs.pr_number }} --json body -t {{.body}} --repo vulkoingim/actions-test)" >> $GITHUB_ENV
             echo 'EOF' >> $GITHUB_ENV
           fi
+      - name: "Set outputs"
+        id: output
+        shell: bash
+        run: |
           {
             echo "preview_enable=${{ contains(env.PR_DESC, '[x] /werft with-preview') }}"
             echo "preview_infra_provider=${{ contains(env.PR_DESC, '[X] /werft with-gce-vm') && 'gce' || 'harvester' }}"
