@@ -43,6 +43,8 @@ jobs:
             })
       - name: Get run URL
         id: output
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           {
             echo "run_url=$(gh run list --workflow dispatch.yaml -b ${{ steps.comment-branch.outputs.head_ref }} --json event,url,status -q '[.[] | select(.event=="workflow_dispatch") | select(.status!="completed").url][0]')"
