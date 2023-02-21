@@ -73,3 +73,11 @@ jobs:
           echo ${{ needs.configuration.outputs.preview_enable }}
           echo ${{ needs.configuration.outputs.preview_infra_provider }}
           echo ${{ needs.configuration.outputs.with_large_vm }}
+      - uses: LouisBrunner/checks-action@v1.6.0
+        if: ${{ github.event_name == 'workflow_dispatch' }} # ' always()
+        with:
+          token: ${{ github.token }}
+          name: Test XYZ
+          conclusion: ${{ job.status }}
+          output: |
+            {"summary":"${{ steps.test.outputs.summary }}"}
