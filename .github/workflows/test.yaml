@@ -38,14 +38,6 @@ jobs:
                 "recreate_vm": '${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}'
               }
             })
-      - uses: LouisBrunner/checks-action@v1.6.0
-        if: ${{ github.event_name == 'workflow_dispatch' }} # ' always()
-        with:
-          token: ${{ github.token }}
-          name: Test XYZ
-          conclusion: ${{ job.status }}
-          output: |
-            {"summary":"${{ steps.test.outputs.summary }}"}
 #      - name: "Create a check run"
 #        uses: actions/github-script@v6
 #        env:
