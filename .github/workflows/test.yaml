@@ -57,10 +57,7 @@ jobs:
               issue_number: ${{ github.event.issue.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Starter run with:
-                      recreate_vm: ${{ needs.dispatch-gh.outputs.branch }}
-                      run_url: ${{ steps.output.outputs.run_url }}
-            '
+              body: 'Starter run with: recreate_vm: ${{ needs.dispatch-gh.outputs.branch }} run_url: ${{ steps.output.outputs.run_url }}'
             })
 
 #            gh run list --workflow dispatch.yaml -b test --json event,headSha,url,status -q '[.[] | select(.event=="workflow_dispatch") | select(.status!="completed").url][0]'
