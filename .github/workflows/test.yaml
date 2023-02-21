@@ -68,9 +68,12 @@ jobs:
               repo: context.repo.repo,
               body: `#### Comment triggered a workflow run
 
-              
               ${{ github.event.issue.user.login }}
+              ${{ github.event.issue.author_associations }}
+              ${{ github.event.issue.user }}
               ${{ github.event.issue.comment.author_associations }}
+              ${{ github.event.issue_comment.author_associations }}
+              ${{ github.event.issue_comment.comment.author_associations }}
               ${{ github.event.comment.author_associations }}
             
               Started workflow run: [${{ needs.dispatch-gh.outputs.run_id }}](${{ needs.dispatch-gh.outputs.run_url }}) 
