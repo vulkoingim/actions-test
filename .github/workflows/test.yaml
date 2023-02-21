@@ -7,7 +7,9 @@ on:
 
 jobs:
   dispatch-gh:
-    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/werft run') }}
+    if: |
+      (github.event.issue.author_association == 'OWNER' || github.event.issue.author_association == 'MEMBER') &&
+      (github.event.issue.pull_request && contains(github.event.comment.body, '/werft run'))
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.comment-branch.outputs.head_ref }}
@@ -68,17 +70,10 @@ jobs:
               repo: context.repo.repo,
               body: `#### Comment triggered a workflow run
 
-              github.event.issue.user.login: ${{ github.event.issue.user.login }}
-              github.event.author_association: ${{ github.event.author_association }}
-              github.event.issue.author_association: ${{ github.event.issue.author_association }}
-              github.event.issue.user: ${{ github.event.issue.user }}
-              github.event.issue.comment.author_association: ${{ github.event.issue.comment.author_association }}
-              github.event.issue_comment.author_association: ${{ github.event.issue_comment.author_association }}
-              github.event.issue_comment.comment.author_association: ${{ github.event.issue_comment.comment.author_association }}
-              github.event.comment.author_association: ${{ github.event.comment.author_association }}
+              github.event.issue.author_association: 
             
               Started workflow run: [${{ needs.dispatch-gh.outputs.run_id }}](${{ needs.dispatch-gh.outputs.run_url }}) 
-              * \`recreate_vm\`: \`${{ needs.dispatch-gh.outputs.recreate_vm }}\``
+              * \`recreate_vm: ${{ needs.dispatch-gh.outputs.recreate_vm }}\``
             })
 #              body: '\n '
 #            })
