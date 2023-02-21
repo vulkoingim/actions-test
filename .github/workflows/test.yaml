@@ -69,8 +69,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `#### Comment triggered a workflow run
-
-              github.event.issue.author_association: 
             
               Started workflow run: [${{ needs.dispatch-gh.outputs.run_id }}](${{ needs.dispatch-gh.outputs.run_url }}) 
               * \`recreate_vm: ${{ needs.dispatch-gh.outputs.recreate_vm }}\``
