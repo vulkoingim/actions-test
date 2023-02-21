@@ -12,18 +12,66 @@ jobs:
     outputs:
       branch: ${{ steps.comment-branch.outputs.head_ref }}
     steps:
-      - uses: xt0rted/pull-request-comment-branch@v1.4.0
+      - uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
-#      - uses: actions/checkout@v3
-      - name: Workflow dispatch
-        env:
-          GH_TOKEN: ${{ github.token }}
-#          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
-        shell: bash
-        run: |
-          echo ${{ steps.comment-branch.outputs.head_ref }}
-          echo ${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}
-          gh workflow run dispatch.yaml --repo vulkoingim/actions-test  -f recreate_vm=${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }} -f pr_number=${{ github.event.issue.number }} --ref ${{ steps.comment-branch.outputs.head_ref }}
+      #      - uses: actions/checkout@v3
+      #      - name: Workflow dispatch
+      #        env:
+      #          GH_TOKEN: ${{ github.token }}
+      ##          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
+      #        shell: bash
+      #        run: |
+      #          echo ${{ steps.comment-branch.outputs.head_ref }}
+      #          echo ${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}
+      #          gh workflow run dispatch.yaml --repo vulkoingim/actions-test  -f recreate_vm=${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }} -f pr_number=${{ github.event.issue.number }} --ref ${{ steps.comment-branch.outputs.head_ref }}
+      - name: Trigger Workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'dispatch.yaml',
+              ref: '${{ steps.comment-branch.outputs.head_ref }}',
+              inputs: {
+                "pr_number": '${{ github.event.issue.number }}',
+                "recreate_vm": '${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}'
+              }
+            })
+      - uses: LouisBrunner/checks-action@v1.6.0
+        if: ${{ github.event_name == 'workflow_dispatch' }} # ' always()
+        with:
+          token: ${{ github.token }}
+          name: Test XYZ
+          conclusion: ${{ job.status }}
+          output: |
+            {"summary":"${{ steps.test.outputs.summary }}"}
+#      - name: "Create a check run"
+#        uses: actions/github-script@v6
+#        env:
+#          parameter_url: '${{ github.event.workflow_run.html_url }}'
+#        with:
+#          debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
+#          script: |
+#            // any JavaScript code can go here, you can use Node JS APIs too.
+#            // Docs: https://docs.github.com/en/rest/checks/runs#create-a-check-run
+#            // Rest: https://octokit.github.io/rest.js/v18#checks-create
+#            await github.rest.checks.create({
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              head_sha: context.sha,
+#              name: "my-check-name",
+#              status: "completed",
+#              // Careful, code injection can happen.
+#              conclusion: "${{ github.event.workflow_run.conclusion }}",
+#              // This is safe, not string interpolation.
+#              details_url: process.env.parameter_url,
+#              output: {
+#                title: "my check title",
+#                summary: "my *check* summary",
+#                text: "my text",
+#              },
+#            });
 
 #  dispatch:
 #    uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@${{ needs.dispatch-gh.outputs.branch }}
