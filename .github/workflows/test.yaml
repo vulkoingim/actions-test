@@ -68,14 +68,7 @@ jobs:
               repo: context.repo.repo,
               body: `#### Comment triggered a workflow run
 
-              ${{ github.event.issue.user.login }}
-              ${{ github.event.author_association }}
               ${{ github.event.issue.author_association }}
-              ${{ github.event.issue.user }}
-              ${{ github.event.issue.comment.author_association }}
-              ${{ github.event.issue_comment.author_association }}
-              ${{ github.event.issue_comment.comment.author_association }}
-              ${{ github.event.comment.author_association }}
             
               Started workflow run: [${{ needs.dispatch-gh.outputs.run_id }}](${{ needs.dispatch-gh.outputs.run_url }}) 
               * \`recreate_vm\`: \`${{ needs.dispatch-gh.outputs.recreate_vm }}\``
