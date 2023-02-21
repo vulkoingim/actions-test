@@ -49,6 +49,7 @@ jobs:
           } >> $GITHUB_OUTPUT
       - uses: actions/github-script@v6
         with:
+          github-token: ${{ github.token }}
           script: |
             github.rest.issues.createComment({
               issue_number: ${{ github.event.issue.number }},
