@@ -53,8 +53,6 @@ jobs:
         with:
           github-token: ${{ github.token }}
           script: |
-            echo "recreate_vm: ${{ needs.dispatch-gh.outputs.branch }}" 
-            echo "run_url: ${{ steps.output.outputs.run_url }}"
             github.rest.issues.createComment({
               issue_number: ${{ github.event.issue.number }},
               owner: context.repo.owner,
