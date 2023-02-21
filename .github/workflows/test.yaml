@@ -46,8 +46,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          url=$(gh run list --workflow dispatch.yaml -b ${{ steps.comment-branch.outputs.head_ref }} --json event,url,status -q '[.[] | select(.event=="workflow_dispatch") | select(.status!="completed").url][0]')
+          echo ${url}
           {
-            echo "run_url=$(gh run list --workflow dispatch.yaml -b ${{ steps.comment-branch.outputs.head_ref }} --json event,url,status -q '[.[] | select(.event=="workflow_dispatch") | select(.status!="completed").url][0]')"
+            echo "run_url=${url}"
           } >> $GITHUB_OUTPUT
       - uses: actions/github-script@v6
         with:
@@ -57,7 +59,7 @@ jobs:
               issue_number: ${{ github.event.issue.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Test test'
+              body: 'Test test ${{ steps.output.outputs.run_url }}'
             })
 
 #            gh run list --workflow dispatch.yaml -b test --json event,headSha,url,status -q '[.[] | select(.event=="workflow_dispatch") | select(.status!="completed").url][0]'
