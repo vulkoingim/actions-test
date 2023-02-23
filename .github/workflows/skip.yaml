@@ -1,4 +1,4 @@
-name: Dev
+name: Skip
 
 on:
   workflow_dispatch:
