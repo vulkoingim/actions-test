@@ -25,7 +25,6 @@ jobs:
         run: |
           echo "test test"
           echo '${{ github.repository }}'
-          # echo '${{ toJSON(github) }}'
       - name: Trigger Workflow
         uses: actions/github-script@v6
         with:
