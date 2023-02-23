@@ -30,7 +30,7 @@ jobs:
       - name: Test
         id: output
         run: |
-          echo "github.event..action: ${{ github.event..action }}"
+          echo "github.event.action: ${{ github.event.action }}"
           echo "github.event.pull_request.action: ${{ github.event.pull_request.action }}"
           echo "github.event.changes.body: ${{ github.event.changes.body }}"
           echo "github.event.changes.body.from: ${{ github.event.changes.body.from }}"
