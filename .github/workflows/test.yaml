@@ -38,6 +38,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          sleep 5
           url=$(gh run list --repo vulkoingim/actions-test --workflow dispatch.yaml -b ${{ steps.comment-branch.outputs.head_ref }} --json event,url,status -q '[.[] | select(.event=="workflow_dispatch") | select(.status!="completed").url][0]')
           {
             echo "run_url=${url}"
@@ -82,5 +83,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: ${{ github.event.comment.id }}
-              body: `Chat ops job failed. See [${{ needs.dispatch-gh.outputs.run_id }}](https://github.com/'${{ github.repository }}'/actions/runs/'${{ github.run_id }}') for details`
+              body: `Chat ops job failed. See [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details`
             })
