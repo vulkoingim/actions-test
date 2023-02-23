@@ -6,7 +6,7 @@ on:
     types: [ created ]
 
 jobs:
-  dispatch-gh:
+  configuration:
     if: |
       (github.event.issue.author_association == 'OWNER' || github.event.issue.author_association == 'MEMBER') &&
       (github.event.issue.pull_request && contains(github.event.comment.body, '/werft run'))
@@ -25,6 +25,8 @@ jobs:
         run: |
           echo "test test"
           echo ${{ github.action_repository }}
+          echo ${{ context.repo.owner }}
+          echo context.repo.owner
       - name: Trigger Workflow
         uses: actions/github-script@v6
         with:
@@ -35,7 +37,7 @@ jobs:
               workflow_id: 'dispatch.yaml',
               ref: '${{ steps.comment-branch.outputs.head_ref }}',
               inputs: {
-                "recreate_vm": '${{ needs.dispatch-gh.outputs.recreate_vm == 'true' }}'
+                "recreate_vm": '${{ contains(github.event.comment.body, 'recreate-vm') }}'
               }
             })
       - name: Get run URL
@@ -52,7 +54,7 @@ jobs:
 
   comment:
     runs-on: ubuntu-latest
-    needs: [ dispatch-gh ]
+    needs: [ configuration ]
     steps:
       - uses: actions/github-script@v6
         with:
@@ -64,44 +66,6 @@ jobs:
               repo: context.repo.repo,
               body: `#### Comment triggered a workflow run
             
-              Started workflow run: [${{ needs.dispatch-gh.outputs.run_id }}](${{ needs.dispatch-gh.outputs.run_url }}) 
-              * \`recreate_vm: ${{ needs.dispatch-gh.outputs.recreate_vm }}\``
+              Started workflow run: [${{ needs.configuration.outputs.run_id }}](${{ needs.configuration.outputs.run_url }}) 
+              * \`recreate_vm: ${{ needs.configuration.outputs.recreate_vm }}\``
             })
-#              body: '\n '
-#            })
-
-#            gh run list --workflow dispatch.yaml -b test --json event,headSha,url,status -q '[.[] | select(.event=="workflow_dispatch") | select(.status!="completed").url][0]'
-#            [.[] | select(.event=="workflow_dispatch") | select(.status!="completed").url][0]
-
-# https://api.github.com/repos/vulkoingim/actions-test/issues/comments/COMMENT_ID
-#      - name: "Create a check run"
-#        uses: actions/github-script@v6
-#        env:
-#          parameter_url: '${{ github.event.workflow_run.html_url }}'
-#        with:
-#          debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
-#          script: |
-#            // any JavaScript code can go here, you can use Node JS APIs too.
-#            // Docs: https://docs.github.com/en/rest/checks/runs#create-a-check-run
-#            // Rest: https://octokit.github.io/rest.js/v18#checks-create
-#            await github.rest.checks.create({
-#              owner: context.repo.owner,
-#              repo: context.repo.repo,
-#              head_sha: context.sha,
-#              name: "my-check-name",
-#              status: "completed",
-#              // Careful, code injection can happen.
-#              conclusion: "${{ github.event.workflow_run.conclusion }}",
-#              // This is safe, not string interpolation.
-#              details_url: process.env.parameter_url,
-#              output: {
-#                title: "my check title",
-#                summary: "my *check* summary",
-#                text: "my text",
-#              },
-#            });
-
-#  dispatch:
-#    uses: vulkoingim/actions-test/.github/workflows/dispatch.yaml@${{ needs.dispatch-gh.outputs.branch }}
-#    with:
-#      pr_description: ${{ github.event.pull_request.body || github.event.issue.body }}
