@@ -31,10 +31,7 @@ jobs:
       - name: Test
         id: output
         run: |
-          
-          echo '${{ github.event.changes.body.from }}' > old_body
-          echo '${{ github.event.pull_request.body }}' > new_body
-          if diff old_body new_body | grep '\[X\]'; then
+          if diff <( echo '${{ github.event.changes.body.from }}') <(echo '${{ github.event.pull_request.body }}') | grep '\[X\]'; then
             echo "something changed"
           else
             echo "nothing changed"
