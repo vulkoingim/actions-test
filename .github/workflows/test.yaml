@@ -7,7 +7,9 @@ on:
 
 jobs:
   dispatch-gh:
+#    needs: [ pre_job ]
     if: |
+#      needs.pre_job.outputs.should_skip != 'true' &&
       (github.event.issue.author_association == 'OWNER' || github.event.issue.author_association == 'MEMBER') &&
       (github.event.issue.pull_request && contains(github.event.comment.body, '/werft run'))
     runs-on: ubuntu-latest

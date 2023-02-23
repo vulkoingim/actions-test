@@ -1,0 +1,26 @@
+name: Dev
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    types: [ opened, synchronize, edited ]
+
+jobs:
+  pre_job:
+    # continue-on-error: true # Uncomment once integration is finished
+    runs-on: ubuntu-latest
+    # Map a step output to a job output
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          concurrent_skipping: 'same_content_newer'
+          skip_after_successful_duplicate: 'true'
+          do_not_skip: '["pull_request", "workflow_dispatch", "schedule"]'
+      - name: Test
+        id: output
+        run: |
+          echo "test test"
