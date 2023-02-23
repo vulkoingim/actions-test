@@ -35,15 +35,15 @@ jobs:
           # Verbose setting SHA when using Pull_Request event trigger to fix #16. (For push even trigger this is not necessary.)
           sha: ${{ github.event.pull_request.head.sha }}
           # Only return if PR is still open. (By default it returns PRs in any state.)
-          filterOutClosed: true
+          #filterOutClosed: true
           # Only return if PR is not in draft state. (By default it returns PRs in any state.)
-          filterOutDraft: true
+          #filterOutDraft: true
       - name: Test
         id: output
         run: |
           echo "TEST"
-          echo '# JSON object with the full PR object'
-          echo '# toJSON(fromJSON(...pr)) parses it into memory and then format is with pretty-print.'
+          #echo '# JSON object with the full PR object'
+          #echo '# toJSON(fromJSON(...pr)) parses it into memory and then format is with pretty-print.'
           echo 'prJSON: ${{ toJSON(fromJSON(steps.current_pr.outputs.pr)) }}'
           echo '# Direct access to common PR properties'
           echo 'prNumber: ${{ steps.PR.outputs.number }}'
