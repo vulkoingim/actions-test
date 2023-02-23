@@ -2,7 +2,7 @@ name: Dev
 
 on:
   workflow_dispatch:
-  push:
+#  push:
   pull_request:
     types: [ edited ]
 #    types: [ opened, synchronize, edited ]
@@ -31,8 +31,7 @@ jobs:
       - name: Test
         id: output
         run: |
-          diff <( echo '${{ github.event.changes.body.from }}') <(echo '${{ github.event.pull_request.body }}') | grep '\[X\]'
-          echo $?
+          diff <( echo '${{ github.event.changes.body.from }}') <(echo '${{ github.event.pull_request.body }}') | grep '\[X\]' && echo $?
           # if diff <( echo '${{ github.event.changes.body.from }}') <(echo '${{ github.event.pull_request.body }}') | grep '\[X\]'; then
           #   echo "something changed"
           # else
