@@ -31,11 +31,12 @@ jobs:
       - name: Test
         id: output
         run: |
-          if diff <( echo '${{ github.event.changes.body.from }}') <(echo '${{ github.event.pull_request.body }}') | grep '\[X\]'; then
-            echo "something changed"
-          else
-            echo "nothing changed"
-          fi
+          diff <( echo '${{ github.event.changes.body.from }}') <(echo '${{ github.event.pull_request.body }}')
+          # if diff <( echo '${{ github.event.changes.body.from }}') <(echo '${{ github.event.pull_request.body }}') | grep '\[X\]'; then
+          #   echo "something changed"
+          # else
+          #   echo "nothing changed"
+          # fi
           
           rm old_body new_body
           echo "test test"
