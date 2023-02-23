@@ -42,19 +42,19 @@ jobs:
       analytics: ${{ steps.output.outputs.analytics }}
       workspace_feature_flags: ${{ steps.output.outputs.workspace_feature_flags }}
     steps:
-      - name: "Set prd"
-        id: prd
-        if: ${{ inputs.pr_number != '' }}
-        env:
-          PR_DESC: ${{ github.event.pull_request.body }}
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          if [[ ${{ inputs.pr_number }} != "" ]]; then
-            echo 'PR_DESC<<EOF' >> $GITHUB_ENV
-            echo "$(gh pr view ${{ inputs.pr_number }} --json body -t {{.body}} --repo vulkoingim/actions-test)" >> $GITHUB_ENV
-            echo 'EOF' >> $GITHUB_ENV
-          fi
+      #      - name: "Set prd"
+      #        id: prd
+      #        if: ${{ inputs.pr_number != '' }}
+      #        env:
+      #          PR_DESC: ${{ github.event.pull_request.body }}
+      #          GH_TOKEN: ${{ github.token }}
+      #        shell: bash
+      #        run: |
+      #          if [[ ${{ inputs.pr_number }} != "" ]]; then
+      #            echo 'PR_DESC<<EOF' >> $GITHUB_ENV
+      #            echo "$(gh pr view ${{ inputs.pr_number }} --json body -t {{.body}} --repo vulkoingim/actions-test)" >> $GITHUB_ENV
+      #            echo 'EOF' >> $GITHUB_ENV
+      #          fi
       - name: "Determine Branch"
         id: branches
         uses: transferwise/sanitize-branch-name@v1
@@ -66,19 +66,19 @@ jobs:
           github-token: ${{ github.token }}
           # Verbose setting SHA when using Pull_Request event trigger to fix #16. (For push even trigger this is not necessary.)
           sha: ${{ github.event.pull_request.head.sha }}
-      #      - name: Detect PR
-      #        id: output
-      #        run: |
-      #          echo 'test2'
-      #          echo '# Direct access to common PR properties'
-      #          echo 'prNumber: ${{ steps.PR.outputs.number }}'
-      #          echo 'prUrl: ${{ steps.PR.outputs.pr_url }}'
-      #          echo 'prTitle: ${{ steps.PR.outputs.pr_title }}'
-      #          echo 'prBody: ${{ steps.PR.outputs.pr_body }}'
-      #          echo 'prCreatedAt: ${{ steps.PR.outputs.pr_created_at }}'
-      #          echo 'prMergedAt: ${{ steps.PR.outputs.pr_merged_at }}'
-      #          echo 'prClosedAt: ${{ steps.PR.outputs.pr_closed_at }}'
-      #          echo 'prLabel: ${{ steps.PR.outputs.pr_labels }}'
+      - name: Detect PR
+        id: pr-details
+        run: |
+          echo 'test2'
+          echo '# Direct access to common PR properties'
+          echo 'prNumber: ${{ steps.PR.outputs.number }}'
+          echo 'prUrl: ${{ steps.PR.outputs.pr_url }}'
+          echo 'prTitle: ${{ steps.PR.outputs.pr_title }}'
+          echo 'prBody: ${{ steps.PR.outputs.pr_body }}'
+          echo 'prCreatedAt: ${{ steps.PR.outputs.pr_created_at }}'
+          echo 'prMergedAt: ${{ steps.PR.outputs.pr_merged_at }}'
+          echo 'prClosedAt: ${{ steps.PR.outputs.pr_closed_at }}'
+          echo 'prLabel: ${{ steps.PR.outputs.pr_labels }}'
       - name: "Set outputs"
         id: output
         env:
