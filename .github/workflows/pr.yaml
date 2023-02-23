@@ -1,0 +1,31 @@
+name: PR
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    types: [ edited ]
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: 8BitJonny/gh-get-current-pr@2.2.0
+        id: PR
+        with:
+          # Authetication token to access GitHub APIs. (Can be omitted by default.)
+          github-token: ${{ github.token }}
+          # Verbose setting SHA when using Pull_Request event trigger to fix #16. (For push even trigger this is not necessary.)
+          sha: ${{ github.event.pull_request.head.sha }}
+      - name: Test
+        id: output
+        run: |
+          echo '# Direct access to common PR properties'
+          echo 'prNumber: ${{ steps.PR.outputs.number }}'
+          echo 'prUrl: ${{ steps.PR.outputs.pr_url }}'
+          echo 'prTitle: ${{ steps.PR.outputs.pr_title }}'
+          echo 'prBody: ${{ steps.PR.outputs.pr_body }}'
+          echo 'prCreatedAt: ${{ steps.PR.outputs.pr_created_at }}'
+          echo 'prMergedAt: ${{ steps.PR.outputs.pr_merged_at }}'
+          echo 'prClosedAt: ${{ steps.PR.outputs.pr_closed_at }}'
+          echo 'prLabel: ${{ steps.PR.outputs.pr_labels }}'
