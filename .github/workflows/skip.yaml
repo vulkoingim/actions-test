@@ -31,8 +31,11 @@ jobs:
       - name: Test
         id: output
         run: |
-          echo "${{ github.event.changes.body.from }}" > old_body
-          echo "${{ github.event.pull_request.body }}" > new_body
+          
+          echo "<<EOF ${{ github.event.changes.body.from }}" > old_body
+          echo 'EOF'
+          echo "<<EOF ${{ github.event.pull_request.body }}" > new_body
+          echo 'EOF'
           if [[ $( diff old_body new_body | grep '\[X\]' ) ]]; then
             echo "something changed"
           fi
