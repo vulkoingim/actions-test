@@ -31,9 +31,17 @@ jobs:
       - name: Test
         id: output
         run: |
-          if [[ $( diff <(echo ${{ github.event.changes.body.from }}) <(echo ${{ github.event.changes.body.from }} ) | grep '\[X\]' ) ]]; then
+          # echo "github.event.action: ${{ github.event.action }}"
+          # echo "github.event.pull_request.action: ${{ github.event.pull_request.action }}"
+          # echo "github.event.changes.body: ${{ github.event.changes.body }}"
+          # echo "github.event.changes.body.from: ${{ github.event.changes.body.from }}"
+          # echo "github.event.pull_request.body: ${{ github.event.pull_request.body }}"
+          echo ${{ github.event.changes.body.from }} > old_body
+          echo ${{ github.event.pull_request.body }} > new_body
+          if [[ $( diff old_body new_body | grep '\[X\]' ) ]]; then
             echo "something changed"
           fi
+          rm old_body new_body
           echo "test test"
           echo "test test"
           echo "test test"
