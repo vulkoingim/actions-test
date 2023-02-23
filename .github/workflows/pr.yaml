@@ -41,6 +41,7 @@ jobs:
       - name: Test
         id: output
         run: |
+          echo "TEST"
           echo '# JSON object with the full PR object'
           echo '# toJSON(fromJSON(...pr)) parses it into memory and then format is with pretty-print.'
           echo 'prJSON: ${{ toJSON(fromJSON(steps.current_pr.outputs.pr)) }}'
