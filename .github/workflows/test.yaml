@@ -20,19 +20,6 @@ jobs:
     steps:
       - uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
-      - name: Detect PR
-        id: outtest
-        run: |
-          echo 'test2'
-          echo '# Direct access to common PR properties'
-          echo 'prNumber: ${{ steps.PR.outputs.number }}'
-          echo 'prUrl: ${{ steps.PR.outputs.pr_url }}'
-          echo 'prTitle: ${{ steps.PR.outputs.pr_title }}'
-          echo 'prBody: ${{ steps.PR.outputs.pr_body }}'
-          echo 'prCreatedAt: ${{ steps.PR.outputs.pr_created_at }}'
-          echo 'prMergedAt: ${{ steps.PR.outputs.pr_merged_at }}'
-          echo 'prClosedAt: ${{ steps.PR.outputs.pr_closed_at }}'
-          echo 'prLabel: ${{ steps.PR.outputs.pr_labels }}'
       - name: Test
         id: testoutput
         run: |
@@ -48,7 +35,7 @@ jobs:
               workflow_id: 'dispatch.yaml',
               ref: '${{ steps.comment-branch.outputs.head_ref }}',
               inputs: {
-                "recreate_vm": '${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}'
+                "recreate_vm": '${{ needs.dispatch-gh.outputs.recreate_vm == 'true' }}'
               }
             })
       - name: Get run URL
