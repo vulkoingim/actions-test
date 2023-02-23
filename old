@@ -1,0 +1,33 @@
+## Description
+<!-- Describe your changes in detail -->
+
+## Related Issue(s)
+<!-- List the issue(s) this PR solves -->
+Fixes #
+
+## Build Options:
+
+- [ ] /werft with-github-actions
+      Experimental feature to run the build with GitHub Actions (and not in Werft).
+- [ ] leeway-no-cache
+      leeway-target=components:all
+- [X] /werft no-test
+      Run Leeway with `--dont-test`
+
+<details>
+<summary>Publish Options</summary>
+
+- [ ] /werft publish-to-npm
+- [ ] /werft publish-to-jb-marketplace
+</details>
+
+<details>
+<summary>Installer Options</summary>
+
+- [ ] with-ee-license
+- [ ] with-slow-database
+- [ ] with-dedicated-emulation
+- [ ] with-ws-manager-mk2
+- [ ] workspace-feature-flags
+  Add desired feature flags to the end of the line above, space separated
+</details>

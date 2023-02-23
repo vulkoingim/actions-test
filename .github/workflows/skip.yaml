@@ -31,11 +31,11 @@ jobs:
       - name: Test
         id: output
         run: |
-          echo "github.event.action: ${{ github.event.action }}"
-          echo "github.event.pull_request.action: ${{ github.event.pull_request.action }}"
-          echo "github.event.changes.body: ${{ github.event.changes.body }}"
-          echo "github.event.changes.body.from: ${{ github.event.changes.body.from }}"
-          echo "github.event.pull_request.body: ${{ github.event.pull_request.body }}"
+#          echo "github.event.action: ${{ github.event.action }}"
+#          echo "github.event.pull_request.action: ${{ github.event.pull_request.action }}"
+#          echo "github.event.changes.body: ${{ github.event.changes.body }}"
+#          echo "github.event.changes.body.from: ${{ github.event.changes.body.from }}"
+#          echo "github.event.pull_request.body: ${{ github.event.pull_request.body }}"
           if [[ $( diff <(echo ${{ github.event.changes.body.from }}) <(echo ${{ github.event.changes.body.from }} ) | grep '\[X\]' ) ]]; then
             echo "something changed"
           fi
