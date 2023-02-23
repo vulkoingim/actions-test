@@ -5,45 +5,21 @@ on:
   push:
   pull_request:
     types: [ edited ]
-#    types: [ opened, synchronize, edited ]
 
 jobs:
-  #  pre_job:
-  #    # continue-on-error: true # Uncomment once integration is finished
-  #    runs-on: ubuntu-latest
-  #    # Map a step output to a job output
-  #    outputs:
-  #      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-  #    steps:
-  #      - id: skip_check
-  #        uses: fkirc/skip-duplicate-actions@v5
-  #        with:
-  #          concurrent_skipping: 'same_content_newer'
-  #          skip_after_successful_duplicate: 'true'
-  #          do_not_skip: '["workflow_dispatch", "schedule"]'
-
-  #    needs: [ pre_job ]
-  #    if: needs.pre_job.outputs.should_skip != 'true'
   test_job:
     runs-on: ubuntu-latest
     steps:
-      - uses: 8BitJonny/gh-get-current-pr@2
+      - uses: 8BitJonny/gh-get-current-pr@2.2.0
         id: PR
         with:
           # Authetication token to access GitHub APIs. (Can be omitted by default.)
           github-token: ${{ github.token }}
           # Verbose setting SHA when using Pull_Request event trigger to fix #16. (For push even trigger this is not necessary.)
           sha: ${{ github.event.pull_request.head.sha }}
-          # Only return if PR is still open. (By default it returns PRs in any state.)
-          filterOutClosed: true
-          # Only return if PR is not in draft state. (By default it returns PRs in any state.)
-          filterOutDraft: true
       - name: Test
         id: output
         run: |
-          echo '# JSON object with the full PR object'
-          echo '# toJSON(fromJSON(...pr)) parses it into memory and then format is with pretty-print.'
-          echo 'prJSON: ${{ toJSON(fromJSON(steps.current_pr.outputs.pr)) }}'
           echo '# Direct access to common PR properties'
           echo 'prNumber: ${{ steps.PR.outputs.number }}'
           echo 'prUrl: ${{ steps.PR.outputs.pr_url }}'
