@@ -27,7 +27,7 @@ jobs:
   test_job:
     runs-on: ubuntu-latest
     steps:
-      - uses: 8BitJonny/gh-get-current-pr@v2
+      - uses: 8BitJonny/gh-get-current-pr@2.2.0
         id: PR
         with:
           # Authetication token to access GitHub APIs. (Can be omitted by default.)
