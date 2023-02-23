@@ -24,3 +24,6 @@ jobs:
         id: output
         run: |
           echo "test test"
+          echo "test test"
+          echo "test test"
+          echo "test test"
