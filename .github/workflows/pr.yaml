@@ -20,7 +20,7 @@ jobs:
       - name: Test
         id: output
         run: |
-          echo 'test'
+          echo 'test2'
           echo '# Direct access to common PR properties'
           echo 'prNumber: ${{ steps.PR.outputs.number }}'
           echo 'prUrl: ${{ steps.PR.outputs.pr_url }}'
