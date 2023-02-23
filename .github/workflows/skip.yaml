@@ -2,25 +2,39 @@ name: Dev
 
 on:
   workflow_dispatch:
-  push:
+#  push:
   pull_request:
-    types: [ opened, synchronize, edited ]
+    types: [ edited ]
+#    types: [ opened, synchronize, edited ]
 
 jobs:
-  pre_job:
-    # continue-on-error: true # Uncomment once integration is finished
+  #  pre_job:
+  #    # continue-on-error: true # Uncomment once integration is finished
+  #    runs-on: ubuntu-latest
+  #    # Map a step output to a job output
+  #    outputs:
+  #      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+  #    steps:
+  #      - id: skip_check
+  #        uses: fkirc/skip-duplicate-actions@v5
+  #        with:
+  #          concurrent_skipping: 'same_content_newer'
+  #          skip_after_successful_duplicate: 'true'
+  #          do_not_skip: '["workflow_dispatch", "schedule"]'
+
+  #    needs: [ pre_job ]
+  #    if: needs.pre_job.outputs.should_skip != 'true'
+
+  test_job:
     runs-on: ubuntu-latest
-    # Map a step output to a job output
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
-      - id: skip_check
-        uses: fkirc/skip-duplicate-actions@v5
-        with:
-          concurrent_skipping: 'same_content_newer'
-          skip_after_successful_duplicate: 'true'
-          do_not_skip: '["pull_request", "workflow_dispatch", "schedule"]'
       - name: Test
         id: output
         run: |
+          if ! diff <( echo '${{ github.event.changes.body.from }}') <(echo '${{ github.event.pull_request.body }}') | grep -e '\[x\]' -e '\[X\]'; then
+             echo "nothing changed"
+          fi
+          
+          echo "test test"
+          echo "test test"
           echo "test test"
