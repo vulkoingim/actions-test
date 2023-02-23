@@ -26,7 +26,6 @@ jobs:
           echo "test test"
           echo ${{ github.action_repository }}
           echo ${{ context.repo.owner }}
-          echo context.repo.owner
       - name: Trigger Workflow
         uses: actions/github-script@v6
         with:
