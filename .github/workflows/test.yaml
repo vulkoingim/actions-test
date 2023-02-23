@@ -72,7 +72,6 @@ jobs:
   comment-fail:
     if: always()
     runs-on: ubuntu-latest
-    needs: [ dispatch-gh ]
     steps:
       - uses: actions/github-script@v6
         with:
