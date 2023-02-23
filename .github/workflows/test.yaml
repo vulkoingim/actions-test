@@ -15,21 +15,29 @@ jobs:
       branch: ${{ steps.comment-branch.outputs.head_ref }}
       run_url: ${{ steps.output.outputs.run_url }}
       run_id: ${{ steps.output.outputs.run_id }}
-      pr_number: ${{ github.event.issue.number }}
+#      pr_number: ${{ github.event.issue.number }}
       recreate_vm: ${{ contains(github.event.comment.body, 'recreate-vm') }}
     steps:
       - uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
-      #      - uses: actions/checkout@v3
-      #      - name: Workflow dispatch
-      #        env:
-      #          GH_TOKEN: ${{ github.token }}
-      ##          PR_DESC: '${{ github.event.pull_request.body || github.event.issue.body }}'
-      #        shell: bash
-      #        run: |
-      #          echo ${{ steps.comment-branch.outputs.head_ref }}
-      #          echo ${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}
-      #          gh workflow run dispatch.yaml --repo vulkoingim/actions-test  -f recreate_vm=${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }} -f pr_number=${{ github.event.issue.number }} --ref ${{ steps.comment-branch.outputs.head_ref }}
+      - name: Detect PR
+        id: outtest
+        run: |
+          echo 'test2'
+          echo '# Direct access to common PR properties'
+          echo 'prNumber: ${{ steps.PR.outputs.number }}'
+          echo 'prUrl: ${{ steps.PR.outputs.pr_url }}'
+          echo 'prTitle: ${{ steps.PR.outputs.pr_title }}'
+          echo 'prBody: ${{ steps.PR.outputs.pr_body }}'
+          echo 'prCreatedAt: ${{ steps.PR.outputs.pr_created_at }}'
+          echo 'prMergedAt: ${{ steps.PR.outputs.pr_merged_at }}'
+          echo 'prClosedAt: ${{ steps.PR.outputs.pr_closed_at }}'
+          echo 'prLabel: ${{ steps.PR.outputs.pr_labels }}'
+      - name: Test
+        id: testoutput
+        run: |
+          echo "test test"
+          echo ${{ github.action_repository }}
       - name: Trigger Workflow
         uses: actions/github-script@v6
         with:
@@ -40,7 +48,6 @@ jobs:
               workflow_id: 'dispatch.yaml',
               ref: '${{ steps.comment-branch.outputs.head_ref }}',
               inputs: {
-                "pr_number": '${{ github.event.issue.number }}',
                 "recreate_vm": '${{ contains(github.event.comment.body, '[x] /werft recreate-vm') }}'
               }
             })
