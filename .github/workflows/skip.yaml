@@ -19,11 +19,10 @@ jobs:
         with:
           concurrent_skipping: 'same_content_newer'
           skip_after_successful_duplicate: 'true'
-          do_not_skip: '["pull_request", "workflow_dispatch", "schedule"]'
+          do_not_skip: '["workflow_dispatch", "schedule"]'
       - name: Test
         id: output
         run: |
-          echo "test test"
           echo "test test"
           echo "test test"
           echo "test test"
