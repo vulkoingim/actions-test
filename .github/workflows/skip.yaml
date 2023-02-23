@@ -38,7 +38,7 @@ jobs:
           #   echo "nothing changed"
           # fi
           
-          rm old_body new_body
+          # rm old_body new_body
           echo "test test"
           echo "test test"
           echo "test test"
