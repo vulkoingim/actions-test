@@ -58,7 +58,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `#### Comment triggered a workflow run
-            
+
               Started workflow run: [${{ needs.configuration.outputs.run_id }}](${{ needs.configuration.outputs.run_url }}) 
               * \`recreate_vm: ${{ needs.configuration.outputs.recreate_vm }}\``
             })
@@ -67,8 +67,7 @@ jobs:
         run: |
           echo "test test"
           echo ${{ github.repository }}
-          echo '${{ toJSON(github) }}'
-
+          # echo '${{ toJSON(github) }}'
 
   comment-fail:
     if: always()
@@ -82,6 +81,6 @@ jobs:
               issue_number: ${{ github.event.issue.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              comment_id: ${{ github.event.comment.id }}
-              body: `Chat ops job failed. See [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details`
+              comment_id: ${{ github.event.comment.id }},
+              body: ${{ github.event.comment.body }} + `Chat ops job failed. See [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details`
             })
