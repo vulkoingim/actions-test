@@ -77,8 +77,8 @@ jobs:
         with:
           github-token: ${{ github.token }}
           script: |
-            let commentBody = "${{ github.event.comment.body }}"
-            commentBody += "\n Chat ops job failed. See [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details"
+            let commentBody = '${{ github.event.comment.body }}'
+            commentBody += "\n\n Chat ops job failed. See [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details"
             github.rest.issues.updateComment({
               issue_number: ${{ github.event.issue.number }},
               owner: context.repo.owner,
@@ -86,5 +86,3 @@ jobs:
               comment_id: ${{ github.event.comment.id }},
               body: commentBody
             })
-
-#              body: ${{ github.event.comment.body }} + `Chat ops job failed. See [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details`
