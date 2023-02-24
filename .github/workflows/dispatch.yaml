@@ -10,15 +10,26 @@ on:
         type: string
         description: "ad"
         default: "false"
-#      pr_number:
-#        required: true
-#        type: string
-#        description: "ad"
-#        default: ""
 
 jobs:
+  diff:
+    name: Skip check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: "Check PR diff"
+        id: pr-diff
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          {
+          if ! diff <( echo '${{ github.event.changes.body.from }}') <(echo '${{ github.event.pull_request.body }}') | grep -e '\[x\]' -e '\[X\]'; then
+             echo "pr_no_diff_skip"
+          fi
+          } >> $GITHUB_OUTPUT
+
   configuration:
     name: Configure job parameters
+    needs: [ diff ]
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.head_ref || github.ref }}-configuration
