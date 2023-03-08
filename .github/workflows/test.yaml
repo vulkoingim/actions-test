@@ -85,11 +85,6 @@ jobs:
   #            echo "run_url=${url}"
   #            echo "run_id=${url##*/}"
   #          } >> $GITHUB_OUTPUT
-
-  comment:
-    runs-on: ubuntu-latest
-    needs: [ configuration ]
-    steps:
       - uses: actions/github-script@v6
         with:
           github-token: ${{ github.token }}
@@ -97,7 +92,7 @@ jobs:
             let commentBody = '${{ github.event.comment.body }}'
             commentBody += `\n\n#### Comment triggered a workflow run
 
-              Started workflow run: [${{ needs.configure.outputs.result.id }}](${{ needs.configure.outputs.result.html_url }})
+              Started workflow run: [${{ steps.output.outputs.result.id }}](${{ steps.output.outputs.result.html_url }})
               * \`recreate_vm: ${{ steps.configure.outputs.recreate-vm }}\``
             github.rest.issues.updateComment({
               issue_number: ${{ github.event.issue.number }},
@@ -115,7 +110,7 @@ jobs:
 
   comment-fail:
     if: ${{ always() && contains(needs.*.result, 'failure') }}
-    needs: [ comment, configuration ]
+    needs: [ configuration ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
