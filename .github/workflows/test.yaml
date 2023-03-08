@@ -44,7 +44,7 @@ jobs:
         with:
           github-token: ${{ github.token }}
           script: |
-            await delay(5000);
+            await new Promise(r => setTimeout(r, 5000));
             let result = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
