@@ -92,7 +92,7 @@ jobs:
             let commentBody = '${{ github.event.comment.body }}'
             commentBody += `\n\n#### Comment triggered a workflow run
 
-              Started workflow run: [${{ steps.output.outputs.result.id }}](${{ steps.output.outputs.result.html_url }})
+              Started workflow run: [${{ fromJSON(steps.output.outputs.result).id }}](${{ fromJSON(steps.output.outputs.result).html_url }})
               * \`recreate_vm: ${{ steps.configure.outputs.recreate-vm }}\``
             github.rest.issues.updateComment({
               issue_number: ${{ github.event.issue.number }},
