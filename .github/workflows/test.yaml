@@ -37,7 +37,6 @@ jobs:
       - uses: actions/github-script@v6
         id: output
         with:
-          result-encoding: string
           github-token: ${{ github.token }}
           script: |
             await new Promise(r => setTimeout(r, 5000));
@@ -54,8 +53,10 @@ jobs:
             
             var url = result.data.workflow_runs
               .filter(function (e) {
-                return e.status != 'completed'
+                return e.status != 'completed' && e.status != 'skipped'
             });
+            
+            return url[0];
             
             console.log(url);
             console.log(url[0]);
