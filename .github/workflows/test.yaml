@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.comment-branch.outputs.head_ref }}
-      run_url: ${{ steps.output.outputs.result.html_url }}
-      run_id: ${{ steps.output.outputs.result.id }}
+      run_url: ${{ steps.test-out.outputs.html_url }}
+      run_id: ${{ steps.test-out.outputs.id }}
       #      pr_number: ${{ github.event.issue.number }}
       recreate_vm: ${{ contains(github.event.comment.body, 'recreate-vm') }}
     steps:
@@ -63,10 +63,14 @@ jobs:
             
             return ret;
       - name: Get run URL
+        id: test-out
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo ${{ steps.output.outputs.result }}
+          {
+            echo "run_url=${{ steps.output.outputs.result.html_url }}"
+            echo "run_id=${{ steps.output.outputs.result.id }}
+          } >> $GITHUB_OUTPUT
   #      - name: Get run URL
   #        id: output
   #        env:
