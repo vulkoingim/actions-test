@@ -44,7 +44,7 @@ jobs:
             echo "run_url=${url}"
             echo "run_id=${url##*/}"
           } >> $GITHUB_OUTPUT
-          toJSON(github)
+          echo ${{ toJSON(github) }}
 
   comment:
     runs-on: ubuntu-latest
