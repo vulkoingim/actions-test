@@ -62,12 +62,6 @@ jobs:
             console.log(ret);
             
             return ret;
-      - name: Get run URL
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          echo ${{ toJSON(steps.output.outputs) }}
-          echo ${{ steps.output.outputs.result }}
   #      - name: Get run URL
   #        id: output
   #        env:
