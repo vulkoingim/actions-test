@@ -15,7 +15,7 @@ jobs:
       branch: ${{ steps.comment-branch.outputs.head_ref }}
       run_url: ${{ steps.output.outputs.run_url }}
       run_id: ${{ steps.output.outputs.run_id }}
-#      pr_number: ${{ github.event.issue.number }}
+      #      pr_number: ${{ github.event.issue.number }}
       recreate_vm: ${{ contains(github.event.comment.body, 'recreate-vm') }}
     steps:
       - uses: xt0rted/pull-request-comment-branch@v1
@@ -65,7 +65,7 @@ jobs:
               comment_id: ${{ github.event.comment.id }},
               body: commentBody
             })
-     - name: Test
+      - name: Test
         id: testoutput
         run: |
           echo "test test"
