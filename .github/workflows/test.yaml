@@ -44,7 +44,6 @@ jobs:
             echo "run_url=${url}"
             echo "run_id=${url##*/}"
           } >> $GITHUB_OUTPUT
-          echo ${{ toJSON(github) }}
 
   comment:
     runs-on: ubuntu-latest
@@ -54,21 +53,24 @@ jobs:
         with:
           github-token: ${{ github.token }}
           script: |
-            github.rest.issues.createComment({
+            let commentBody = '${{ github.event.comment.body }}'
+            commentBody += `#### Comment triggered a workflow run
+
+              Started workflow run: [${{ needs.configure.outputs.run_id }}](${{ needs.configure.outputs.run_url }})
+              * \`recreate_vm: ${{ steps.configure.outputs.recreate-vm }}\``
+            github.rest.issues.updateComment({
               issue_number: ${{ github.event.issue.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `#### Comment triggered a workflow run
-
-              Started workflow run: [${{ needs.configuration.outputs.run_id }}](${{ needs.configuration.outputs.run_url }}) 
-              * \`recreate_vm: ${{ needs.configuration.outputs.recreate_vm }}\``
+              comment_id: ${{ github.event.comment.id }},
+              body: commentBody
             })
-      - name: Test
+     - name: Test
         id: testoutput
         run: |
           echo "test test"
           echo ${{ github.repository }}
-          # echo '${{ toJSON(github) }}'
+          echo '${{ toJSON(github) }}'
 
   comment-fail:
     if: ${{ always() && contains(needs.*.result, 'failure') }}
