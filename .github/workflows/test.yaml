@@ -48,11 +48,16 @@ jobs:
               event: 'workflow_dispatch',
               per_page: 10
             });
-                       
-            result.data.workflow_runs
+            
+            var url = result.data.workflow_runs
               .filter(function (e) {
                 e.status != 'completed'    
             });
+            
+            return {
+              html_url: url[0].html_url,
+              id: url[0].id
+            };
       - name: Get run URL
         env:
           GH_TOKEN: ${{ github.token }}
