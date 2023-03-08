@@ -68,8 +68,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           {
-            echo "run_url=${{ steps.output.outputs.result.html_url }}"
-            echo "run_id=${{ steps.output.outputs.result.id }}
+            echo 'run_url=${{ steps.output.outputs.result.html_url }}'
+            echo 'run_id=${{ steps.output.outputs.result.id }}'
           } >> $GITHUB_OUTPUT
   #      - name: Get run URL
   #        id: output
