@@ -49,21 +49,19 @@ jobs:
               per_page: 20
             });
             
-            console.log(result.data.workflow_runs[0]);
-            
             var url = result.data.workflow_runs
               .filter(function (e) {
                 return e.status != 'completed' && e.status != 'skipped'
             });
             
-            return url[0];
+            let ret = {
+              html_url: url[0].html_url,
+              id: url[0].id
+            };
             
-            console.log(url);
-            console.log(url[0]);
-            console.log(url[0].html_url);
-            console.log(url[0]['html_url']);
+            console.log(ret);
             
-            return url[0].html_url;
+            return ret;
       - name: Get run URL
         env:
           GH_TOKEN: ${{ github.token }}
