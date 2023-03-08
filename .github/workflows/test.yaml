@@ -37,6 +37,7 @@ jobs:
       - uses: actions/github-script@v6
         id: output
         with:
+          result-encoding: string
           github-token: ${{ github.token }}
           script: |
             await new Promise(r => setTimeout(r, 5000));
@@ -54,10 +55,7 @@ jobs:
                 e.status != 'completed'    
             });
             
-            return {
-              html_url: url[0].html_url,
-              id: url[0].id
-            };
+            return url[0].html_url;
       - name: Get run URL
         env:
           GH_TOKEN: ${{ github.token }}
