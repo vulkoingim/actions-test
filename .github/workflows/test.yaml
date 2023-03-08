@@ -36,6 +36,7 @@ jobs:
             })
       # Comment with a link to the job that got triggered
       - uses: actions/github-script@v6
+        name: Get run URL
         id: output
         with:
           github-token: ${{ github.token }}
@@ -55,18 +56,7 @@ jobs:
                 return e.status != 'completed' && e.status != 'skipped'
             });
             
-            console.log(url[0]);
-            
             return url[0];
-            
-            let ret = {
-              html_url: url[0].html_url,
-              id: url[0].id
-            };
-            
-            console.log(ret);
-            
-            return ret;
       - name: Get run URL
         id: test-out
         env:
