@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.comment-branch.outputs.head_ref }}
-      run_url: ${{ steps.output.outputs.result.html_url }}
+      run_url: ${{ steps.output.outputs.result }}
       run_id: ${{ steps.output.outputs.result.id }}
       #      pr_number: ${{ github.event.issue.number }}
       recreate_vm: ${{ contains(github.event.comment.body, 'recreate-vm') }}
