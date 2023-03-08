@@ -55,6 +55,8 @@ jobs:
                 return e.status != 'completed' && e.status != 'skipped'
             });
             
+            console.log(url[0]);
+            
             return url[0];
             
             let ret = {
@@ -86,6 +88,7 @@ jobs:
   #            echo "run_id=${url##*/}"
   #          } >> $GITHUB_OUTPUT
       - uses: actions/github-script@v6
+        id: comment
         with:
           github-token: ${{ github.token }}
           script: |
