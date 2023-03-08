@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.comment-branch.outputs.head_ref }}
-      run_url: ${{ steps.output.outputs.run_url }}
-      run_id: ${{ steps.output.outputs.run_id }}
+      run_url: ${{ steps.output.outputs.result.html_url }}
+      run_id: ${{ steps.output.outputs.result.id }}
       #      pr_number: ${{ github.event.issue.number }}
       recreate_vm: ${{ contains(github.event.comment.body, 'recreate-vm') }}
     steps:
@@ -34,13 +34,13 @@ jobs:
               }
             })
       - name: Get run URL
-        id: output
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           sleep 5
       # Comment with a link to the job that got triggered
       - uses: actions/github-script@v6
+        id: output
         with:
           github-token: ${{ github.token }}
           script: |
@@ -62,7 +62,7 @@ jobs:
                 e.status != 'completed'    
             })[0];
             
-            console.log(url)
+            return url[0];
 
   #      - name: Get run URL
   #        id: output
