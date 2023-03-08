@@ -54,7 +54,7 @@ jobs:
           github-token: ${{ github.token }}
           script: |
             let commentBody = '${{ github.event.comment.body }}'
-            commentBody += `#### Comment triggered a workflow run
+            commentBody += `\n\n#### Comment triggered a workflow run
 
               Started workflow run: [${{ needs.configure.outputs.run_id }}](${{ needs.configure.outputs.run_url }})
               * \`recreate_vm: ${{ steps.configure.outputs.recreate-vm }}\``
