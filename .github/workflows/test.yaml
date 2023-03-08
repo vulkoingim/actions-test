@@ -52,7 +52,7 @@ jobs:
               branch: '${{ steps.comment-branch.outputs.head_ref }}',
               event: 'workflow_dispatch',
               per_page: 1,
-              status: 'in_progress || pending'
+              status: '!=completed'
             });
             
             console.log(result);
