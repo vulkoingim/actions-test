@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.comment-branch.outputs.head_ref }}
+      result: ${{ steps.test-out.outputs.result }}
       run_url: ${{ steps.test-out.outputs.html_url }}
       run_id: ${{ steps.test-out.outputs.id }}
       #      pr_number: ${{ github.event.issue.number }}
@@ -54,6 +55,8 @@ jobs:
                 return e.status != 'completed' && e.status != 'skipped'
             });
             
+            return url[0];
+            
             let ret = {
               html_url: url[0].html_url,
               id: url[0].id
@@ -94,7 +97,7 @@ jobs:
             let commentBody = '${{ github.event.comment.body }}'
             commentBody += `\n\n#### Comment triggered a workflow run
 
-              Started workflow run: [${{ needs.configure.outputs.run_id }}](${{ needs.configure.outputs.run_url }})
+              Started workflow run: [${{ needs.configure.outputs.result.id }}](${{ needs.configure.outputs.result.html_url }})
               * \`recreate_vm: ${{ steps.configure.outputs.recreate-vm }}\``
             github.rest.issues.updateComment({
               issue_number: ${{ github.event.issue.number }},
