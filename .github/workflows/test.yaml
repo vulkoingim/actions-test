@@ -54,11 +54,12 @@ jobs:
                 e.status != 'completed'    
             });
             
-            return url[0];
+            return url;
       - name: Get run URL
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          echo ${{ toJSON(steps.output.outputs) }}
           echo ${{ steps.output.outputs.result }}
   #      - name: Get run URL
   #        id: output
