@@ -55,6 +55,7 @@ jobs:
                 e.status != 'completed'    
             });
             
+            console.log(url);
             console.log(url[0]);
             console.log(url[0].html_url);
             console.log(url[0]['html_url']);
