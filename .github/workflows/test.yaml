@@ -50,6 +50,8 @@ jobs:
               per_page: 20
             });
             
+            console.log(result);
+            
             var url = result.data.workflow_runs
               .filter(function (e) {
                 e.status != 'completed' && e.status != 'skipped'
