@@ -71,7 +71,7 @@ jobs:
           # echo '${{ toJSON(github) }}'
 
   comment-fail:
-    if: always()
+    if: (always() && contains(needs.*.result, 'failure'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
