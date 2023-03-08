@@ -48,7 +48,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'dispatch.yaml',
-              branch: ${{ steps.comment-branch.outputs.head_ref }},
+              branch: '${{ steps.comment-branch.outputs.head_ref }}',
               event: 'workflow_dispatch',
             });
             
