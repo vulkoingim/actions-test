@@ -17,6 +17,7 @@ jobs:
       run_id: ${{ steps.output.outputs.run_id }}
 #      pr_number: ${{ github.event.issue.number }}
       recreate_vm: ${{ contains(github.event.comment.body, 'recreate-vm') }}
+      result: job.status
     steps:
       - uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
