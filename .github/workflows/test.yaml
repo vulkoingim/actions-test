@@ -55,6 +55,10 @@ jobs:
                 e.status != 'completed'    
             });
             
+            console.log(url[0].html_url);
+            console.log(url[0]['html_url']);
+            console.log(url[0]);
+            
             return url[0].html_url;
       - name: Get run URL
         env:
