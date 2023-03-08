@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.comment-branch.outputs.head_ref }}
-      run_url: ${{ steps.output.outputs.result }}
+      run_url: ${{ steps.output.outputs.result.html_url }}
       run_id: ${{ steps.output.outputs.result.id }}
       #      pr_number: ${{ github.event.issue.number }}
       recreate_vm: ${{ contains(github.event.comment.body, 'recreate-vm') }}
@@ -33,11 +33,6 @@ jobs:
                 "recreate_vm": '${{ contains(github.event.comment.body, 'recreate-vm') }}'
               }
             })
-      - name: Get run URL
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          sleep 5
       # Comment with a link to the job that got triggered
       - uses: actions/github-script@v6
         id: output
@@ -53,17 +48,18 @@ jobs:
               event: 'workflow_dispatch',
               per_page: 10
             });
-            
-            console.log(result);
-            console.log(result.data.workflow_runs[0]);
-            
+                       
             var url = result.data.workflow_runs
               .filter(function (e) {
                 e.status != 'completed'    
             });
             
             return url[0];
-
+      - name: Get run URL
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo ${{ steps.output.outputs.result }}
   #      - name: Get run URL
   #        id: output
   #        env:
