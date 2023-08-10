@@ -32,3 +32,5 @@ jobs:
 
   dispatch:
     uses: ./.github/workflows/concurrency.yaml
+    with:
+      appName: "test"

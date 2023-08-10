@@ -29,7 +29,9 @@ jobs:
 
       - name: my-step
         run: |
-          echo '${{ toJSON(github.event) }}'
+          echo '${{ inputs.appName }}'
+          echo '${{ toJSON(inputs) }}'
+          echo '${{ toJSON(github) }}'
           echo "Hello World! ${{ github.workflow }}-${{ github.event.inputs.appName }}" or wf "${{ github.event.workflow_dispatch.inputs.appName }}"
 
       - name: sleep
