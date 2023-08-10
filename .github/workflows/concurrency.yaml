@@ -1,0 +1,32 @@
+name: Test GH Concurrency
+run-name: "App: ${{ inputs.appName }}"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_dispatch.inputs.appName || github.event.inputs.appName }}
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+    inputs:
+      appName:
+        description: 'App you want to deploy'
+        default: 'busybox'
+  workflow_call:
+    inputs:
+      appName:
+        description: 'App you want to deploy'
+        default: 'busybox'
+
+jobs:
+  setup-runner:
+    name: "First Job"
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: my-step
+        run: echo "Hello World! ${{ github.workflow }}-${{ github.event.inputs.appName }}"
+
+      - name: sleep
+        run: sleep 20
