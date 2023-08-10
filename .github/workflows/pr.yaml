@@ -29,3 +29,6 @@ jobs:
           echo 'prMergedAt: ${{ steps.PR.outputs.pr_merged_at }}'
           echo 'prClosedAt: ${{ steps.PR.outputs.pr_closed_at }}'
           echo 'prLabel: ${{ steps.PR.outputs.pr_labels }}'
+
+dispatch:
+  uses: ./.github/workflows/concurrency.yaml

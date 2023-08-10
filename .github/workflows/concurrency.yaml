@@ -28,7 +28,7 @@ jobs:
           ref: ${{ inputs.branch }}
 
       - name: my-step
-        run: echo "Hello World! ${{ github.workflow }}-${{ github.event.inputs.appName }}"
+        run: echo "Hello World! ${{ github.workflow }}-${{ github.event.inputs.appName }}" or wf "${{ github.event.workflow_dispatch.inputs.appName }}
 
       - name: sleep
         run: sleep 20
