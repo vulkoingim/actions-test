@@ -10,11 +10,13 @@ on:
       appName:
         description: 'App you want to deploy'
         default: 'busybox'
+        type: string
   workflow_call:
     inputs:
       appName:
         description: 'App you want to deploy'
         default: 'busybox'
+        type: string
 
 jobs:
   setup-runner:
