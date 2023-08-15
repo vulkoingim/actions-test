@@ -17,6 +17,8 @@ on:
         description: 'App you want to deploy'
         default: 'busybox'
         type: string
+  schedule:
+    - cron: "* * * * *"
 
 jobs:
   setup-runner:
