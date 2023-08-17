@@ -1,6 +1,6 @@
 name: Dispatch
 on:
-  push:
+#  push:
   pull_request:
     types: [ opened, edited ]
   workflow_dispatch:

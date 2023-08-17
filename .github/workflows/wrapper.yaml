@@ -1,0 +1,37 @@
+name: Release action wrapper
+
+on:
+  push:
+    #    branches:
+    #      - main
+    paths:
+      - "*.yaml"
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'The environments to trigger the workflows for'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      resources:
+        description: 'The resources to trigger the workflows for'
+        required: true
+        type: choice
+        options:
+          - foo
+          - bar
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send greeting
+        run: |
+          echo "${{ github.event.inputs.env }}"
+          echo "${{ fromJSON('["", "🥳"]')[github.event.inputs.use-emoji == 'true'] }}"
+          echo "${{ github.event.inputs.resources != '' && github.event.inputs.resources || fromJSON('["staging", "prod"]') }}"
+          echo "${{ github.event.inputs }}"
+          echo "${{ github.event.inputs.resources }}"
+          echo "${{ github.event.inputs.env }}"
