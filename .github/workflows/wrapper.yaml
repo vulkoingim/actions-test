@@ -22,8 +22,9 @@ jobs:
   push:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-    matrix:
-      env: ${{fromJson(github.event.inputs.env != '' && github.event.inputs.env || '["staging", "production"]')}}
+    strategy:
+      matrix:
+        env: ${{fromJson(github.event.inputs.env != '' && github.event.inputs.env || '["staging", "production"]')}}
     steps:
       - name: Send greeting
         run: |
