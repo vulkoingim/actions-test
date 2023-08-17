@@ -29,7 +29,7 @@ jobs:
         run: |
           echo "${{ matrix.env }}"
           echo "${{ toJSON(github) }}"
-          echo "${{ toJSON(event) }}"
+          echo "${{ toJSON(github.event) }}"
 
 #  ami:
 #    runs-on: ubuntu-latest
