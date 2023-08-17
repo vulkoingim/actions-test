@@ -20,7 +20,7 @@ on:
 jobs:
   push:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+#    if: github.event_name == 'push'
     strategy:
       matrix:
         env: ${{fromJson(github.event.inputs.env != '' && github.event.inputs.env || '["staging", "production"]')}}
