@@ -4,8 +4,8 @@ on:
   push:
     #    branches:
     #      - main
-    paths:
-      - "wrapper.yaml"
+#    paths:
+#      - "wrapper.yaml"
   workflow_dispatch:
     inputs:
       env:
