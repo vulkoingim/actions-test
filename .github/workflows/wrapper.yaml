@@ -2,9 +2,8 @@ name: Wrapper test
 
 on:
   push:
-#    paths:
-#      - '**/ami/**'
-#      - '**/prerequisites/**'
+    paths:
+      - "wrapper.yaml"
   workflow_dispatch:
     inputs:
       env:
@@ -28,18 +27,20 @@ jobs:
     steps:
       - name: Send greeting
         run: |
-          ${{ matrix.env }}
+          echo "${{ matrix.env }}"
+          echo "${{ toJSON(github) }}"
+          echo "${{ toJSON(event) }}"
 
-  ami:
-    runs-on: ubuntu-latest
-    #    if: contains(github.event.head_commit.modified, '**/ami/**') || github.event_name == 'workflow_dispatch'
-    strategy:
-      matrix:
-        env: ${{fromJson(github.event.inputs.env != '' && github.event.inputs.env || '["staging", "production"]')}}
-    steps:
-      - name: Run job for resource ami
-        run: |
-          ${{ matrix.env }}
+#  ami:
+#    runs-on: ubuntu-latest
+#    #    if: contains(github.event.head_commit.modified, '**/ami/**') || github.event_name == 'workflow_dispatch'
+#    strategy:
+#      matrix:
+#        env: ${{fromJson(github.event.inputs.env != '' && github.event.inputs.env || '["staging", "production"]')}}
+#    steps:
+#      - name: Run job for resource ami
+#        run: |
+#          echo "${{ matrix.env }}"
 
 #  prerequisites:
 #    runs-on: ubuntu-latest
