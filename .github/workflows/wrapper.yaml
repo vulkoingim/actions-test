@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     matrix:
-      env: ${{fromJson(github.event.inputs.env ?? '["staging", "production"]')}}
+      env: ${{fromJson(github.event.inputs.env != '' && github.event.inputs.env || '["staging", "production"]')}}
     steps:
       - name: Send greeting
         run: |
@@ -34,7 +34,7 @@ jobs:
     #    if: contains(github.event.head_commit.modified, '**/ami/**') || github.event_name == 'workflow_dispatch'
     strategy:
       matrix:
-        env: ${{fromJson(github.event.inputs.env ?? '["staging", "production"]')}}
+        env: ${{fromJson(github.event.inputs.env != '' && github.event.inputs.env || '["staging", "production"]')}}
     steps:
       - name: Run job for resource ami
         run: |
