@@ -2,26 +2,22 @@ name: Wrapper test
 
 on:
   push:
-    #    branches:
-    #      - main
-#    paths:
-#      - "wrapper.yaml"
+  #    branches:
+  #      - main
+  #    paths:
+  #      - "wrapper.yaml"
   workflow_dispatch:
     inputs:
       env:
-        description: 'The environments to trigger the workflows for'
+        description: 'Comma separated list of strings with the env trigger the workflows for'
         required: true
-        type: choice
-        options:
-          - staging
-          - production
+        type: string
+        default: "staging,production"
       resources:
-        description: 'The resources to trigger the workflows for'
+        description: 'Comma separated list of strings with the resource trigger the workflows for'
         required: true
-        type: choice
-        options:
-          - foo
-          - bar
+        type: string
+        default: "ami,prerequisites"
 
 jobs:
   test:
@@ -30,7 +26,13 @@ jobs:
       - name: Send greeting
         run: |
           echo "${{ github.event.inputs.env }}"
-          echo "${{ fromJSON('["", "🥳"]')[github.event.inputs.use-emoji == 'true'] }}"
+          echo "${{ fromJSON('["staging", "production"]') }}"
+          echo "${{ toJSON('["staging", "production"]') }}"
+          echo "${{ toJSON('["staging", "production"]') }}"
+          echo "tojson: ${{ toJSON('[ github.event.inputs.resources ]') }}"
+          echo "tojson: ${{ toJSON('[ github.event.inputs.env ]') }}"
+          echo "fromjson: ${{ fromJSON('[ github.event.inputs.resources ]') }}"
+          echo "fromjson: ${{ fromJSON('[ github.event.inputs.env ]') }}"
           echo "${{ github.event.inputs.resources != '' && github.event.inputs.resources || fromJSON('["staging", "prod"]') }}"
           echo "${{ github.event.inputs }}"
           echo "${{ github.event.inputs.resources }}"
