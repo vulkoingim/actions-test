@@ -2,38 +2,54 @@ name: Wrapper test
 
 on:
   push:
-  #    branches:
-  #      - main
-  #    paths:
-  #      - "wrapper.yaml"
+    paths:
+      - '**/ami/**'
+      - '**/prerequisites/**'
   workflow_dispatch:
     inputs:
       env:
         description: 'Comma separated list of strings with the env trigger the workflows for'
         required: true
         type: string
-        default: "staging,production"
+        default: 'staging,production'
       resources:
         description: 'Comma separated list of strings with the resource trigger the workflows for'
         required: true
         type: string
-        default: "ami,prerequisites"
+        default: 'ami,prerequisites'
 
 jobs:
-  test:
+  push:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    matrix:
+      env: ${{fromJson(github.event.inputs.env ?? '["staging", "production"]')}}
     steps:
       - name: Send greeting
         run: |
-          echo "${{ github.event.inputs.env }}"
-          echo "${{ fromJSON('["staging", "production"]') }}"
-          echo "${{ toJSON('["staging", "production"]') }}"
-          echo "${{ toJSON('["staging", "production"]') }}"
-          echo "tojson: ${{ toJSON('[ github.event.inputs.resources ]') }}"
-          echo "tojson: ${{ toJSON('[ github.event.inputs.env ]') }}"
-          echo "fromjson: ${{ fromJSON('[ github.event.inputs.resources ]') }}"
-          echo "fromjson: ${{ fromJSON('[ github.event.inputs.env ]') }}"
-          echo "${{ github.event.inputs.resources != '' && github.event.inputs.resources || fromJSON('["staging", "prod"]') }}"
-          echo "${{ github.event.inputs }}"
-          echo "${{ github.event.inputs.resources }}"
-          echo "${{ github.event.inputs.env }}"
+          ${{ matrix.env }}
+
+  ami:
+    runs-on: ubuntu-latest
+    #    if: contains(github.event.head_commit.modified, '**/ami/**') || github.event_name == 'workflow_dispatch'
+    strategy:
+      matrix:
+        env: ${{fromJson(github.event.inputs.env ?? '["staging", "production"]')}}
+    steps:
+      - name: Run job for resource ami
+        run: |
+          ${{ matrix.env }}
+
+#  prerequisites:
+#    runs-on: ubuntu-latest
+#    if: contains(github.event.head_commit.modified, '**/prerequisites/**') || github.event_name == 'workflow_dispatch'
+#    strategy:
+#      matrix:
+#        env: ${{fromJson(github.event.inputs.env ?? '["staging", "production"]')}}
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v2
+#
+#      - name: Run job for resource prerequisites
+#        run: |
+#          # Your commands here for the resource prerequisites
