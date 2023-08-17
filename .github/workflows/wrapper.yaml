@@ -23,7 +23,7 @@ jobs:
 #    if: github.event_name == 'push'
     strategy:
       matrix:
-        env: ${{fromJson(github.event.inputs.env != '' && github.event.inputs.env || '["staging", "production"]')}}
+        env: ${{fromJson(github.event_name == 'push' && '["staging", "production"]' || github.event.inputs.env )}}
     steps:
       - name: Send greeting
         run: |
