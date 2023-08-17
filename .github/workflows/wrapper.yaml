@@ -1,11 +1,11 @@
-name: Release action wrapper
+name: Wrapper test
 
 on:
   push:
     #    branches:
     #      - main
     paths:
-      - "*.yaml"
+      - "wrapper.yaml"
   workflow_dispatch:
     inputs:
       env:
