@@ -3,7 +3,7 @@ name: Wrapper test
 on:
   push:
     paths:
-      - "wrapper.yaml"
+      - '.github/workflows/wrapper.yaml'
   workflow_dispatch:
     inputs:
       env:
