@@ -16,11 +16,15 @@ on:
         required: true
         type: string
         default: 'ami,prerequisites'
+      run:
+        description: ''
+        required: true
+        type: boolean
 
 jobs:
   push:
     runs-on: ubuntu-latest
-#    if: github.event_name == 'push'
+    if: ${{ inputs.run == 'true' }}
     strategy:
       matrix:
         env: ${{fromJson(github.event_name == 'push' && '["staging", "production"]' || inputs.env )}}
