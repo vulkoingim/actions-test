@@ -10,12 +10,8 @@ on:
         description: 'Comma separated list of strings with the env trigger the workflows for'
         required: true
         type: string
-        default: '["staging","production"]'
-      resources:
-        description: 'Comma separated list of strings with the resource trigger the workflows for'
-        required: true
-        type: string
-        default: 'ami,prerequisites'
+        default: '["staging"]'
+#        default: '["staging","production"]'
       run:
         description: ''
         required: true
