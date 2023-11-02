@@ -28,9 +28,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-tags: 'true'
+      - run: git fetch --prune --unshallow --tags
       - name: Send greeting
         run: |
-          git fetch -a
           git describe --tags --always
           git describe --tags --abbrev=0 --always
           git rev-parse HEAD
