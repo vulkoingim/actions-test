@@ -30,6 +30,7 @@ jobs:
           fetch-tags: true
       - name: Send greeting
         run: |
+          git fetch --tags
           git describe --tags
           git describe --tags --abbrev=0
           git rev-parse HEAD
