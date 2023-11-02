@@ -34,6 +34,7 @@ jobs:
           git describe --tags --always
           git describe --tags --abbrev=0 --always
           git rev-parse HEAD
+          git branch --show-current
           # echo "${{ matrix.env }}"
           # echo "${{ toJSON(github) }}"
           # echo "${{ toJSON(github.event) }}"
