@@ -23,14 +23,15 @@ jobs:
     if: inputs.run || github.event_name == 'push'
     strategy:
       matrix:
-        env: ${{fromJson(github.event_name == 'push' && '["staging", "production"]' || inputs.env )}}
+        env: ${{ inputs.env }}
+#        env: ${{fromJson(github.event_name == 'push' && '["staging", "production"]' || inputs.env )}}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-tags: 'true'
       - name: Send greeting
         run: |
-          git fetch --tags 
+          git fetch -a
           git describe --tags --always
           git describe --tags --abbrev=0 --always
           git rev-parse HEAD
