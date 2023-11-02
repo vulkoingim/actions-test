@@ -35,6 +35,7 @@ jobs:
           echo '${{ toJSON(inputs) }}'
           echo '${{ toJSON(github) }}'
           echo "Hello World! ${{ github.workflow }}-${{ github.event.inputs.appName }}" or wf "${{ github.event.workflow_dispatch.inputs.appName }}"
+          echo "${{ github.event_name }}"
 
       - name: sleep
         run: sleep 20

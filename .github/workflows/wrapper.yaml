@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Send greeting
         run: |
+          git describe --tags --abbrev=0
+          git rev-parse HEAD
           echo "${{ matrix.env }}"
           echo "${{ toJSON(github) }}"
           echo "${{ toJSON(github.event) }}"
