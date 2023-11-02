@@ -29,6 +29,7 @@ jobs:
       matrix:
         env: ${{fromJson(github.event_name == 'push' && '["staging", "production"]' || inputs.env )}}
     steps:
+      - uses: actions/checkout@v3
       - name: Send greeting
         run: |
           git describe --tags --abbrev=0
